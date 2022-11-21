@@ -8,11 +8,14 @@ Get market signals from https://www.bi123.co and auto-make orders in Binance.
 `config.py` format:
 
 ```
-EMAIL = 'admin@abc.com'
-PASSWORD = 'pwd'
-SERVER = 'imap.server.com'
-PORT = 8080
+EMAIL = ''
+PASSWORD = ''
+SERVER = ''
+PORT = 0
 
-apiToken = 'abc'
-chatID = 'abc'
+telegram_api_token = ''
+telegram_chat_id = ''
+
+biance_api_key = ''
+biance_secrect_key = ''
 ```

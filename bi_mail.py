@@ -3,6 +3,7 @@ import imaplib
 import datetime
 
 import config as cfg
+import biance_order as bo
 import telegram_bot as tb
 
 
@@ -46,3 +47,8 @@ def get_mail():
 
                 tb.send_to_telegram(
                     f'From: {mail_from}\nSubject: {mail_subject}\nContent: {mail_content}')
+
+                if mail_content.includs('看涨'):
+                    bo.make_order('buy')
+                if mail_content.includs('看跌'):
+                    bo.make_order('sell')
