@@ -1,7 +1,7 @@
 
 ## txbot
 
-Get market signals from <bi123.co> and auto-make orders in Binance.
+Get market signals from https://www.bi123.co and auto-make orders in Binance.
 
 ## Configuration
 
