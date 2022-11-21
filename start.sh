@@ -1,0 +1,1 @@
+nohup python3 -u task.py > task.log 2>&1 &
