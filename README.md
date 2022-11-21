@@ -1,12 +1,18 @@
 
+## txbot
+
+Get market signals from <bi123.co> and auto-make orders in Binance.
+
+## Configuration
+
 `config.py` format:
 
 ```
-EMAIL = ''
-PASSWORD = ''
-SERVER = ''
-PORT = 0
+EMAIL = 'admin@abc.com'
+PASSWORD = 'pwd'
+SERVER = 'imap.server.com'
+PORT = 8080
 
-apiToken = ''
-chatID = ''
+apiToken = 'abc'
+chatID = 'abc'
 ```

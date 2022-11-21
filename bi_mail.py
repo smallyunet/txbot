@@ -1,15 +1,12 @@
 import email
 import imaplib
-
-import schedule
-import time
 import datetime
 
 import config as cfg
 import telegram_bot as tb
 
 
-def getMail():
+def get_mail():
     print("---- running at " + str(datetime.datetime.now()) + " ----")
 
     mail = imaplib.IMAP4_SSL(cfg.SERVER, cfg.PORT)
@@ -49,11 +46,3 @@ def getMail():
 
                 tb.send_to_telegram(
                     f'From: {mail_from}\nSubject: {mail_subject}\nContent: {mail_content}')
-
-
-schedule.every().hour.at(":03").do(getMail)
-print("Started at " + str(datetime.datetime.now()))
-
-while True:
-    schedule.run_pending()
-    time.sleep(1)
