@@ -9,6 +9,7 @@ import telegram_bot as tb
 
 def get_mail():
     print("---- running at " + str(datetime.datetime.now()) + " ----")
+    tb.send_to_telegram("running at " + str(datetime.datetime.now()))
 
     mail = imaplib.IMAP4_SSL(cfg.SERVER, cfg.PORT)
     mail.login(cfg.EMAIL, cfg.PASSWORD)
