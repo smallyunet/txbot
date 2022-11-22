@@ -2,10 +2,18 @@ import base64
 import email
 import imaplib
 import datetime
+from email.header import decode_header
 
 import config as cfg
 import binance_client as bc
 import telegram as tb
+
+
+def getStr(s):
+    if type(s) is bytes:
+        return s.decode('utf-8')
+    else:
+        return s
 
 
 def get_mail():
@@ -33,8 +41,10 @@ def get_mail():
             if isinstance(response_part, tuple):
                 message = email.message_from_bytes(response_part[1])
 
-                mail_from = message['from']
-                mail_subject = message['subject']
+                mail_from, encoding = decode_header(message["From"])[0]
+                mail_subject, encoding = decode_header(message["Subject"])[0]
+                mail_from = getStr(mail_from)
+                mail_subject = getStr(mail_subject)
 
                 body = ""
                 if message.is_multipart():
@@ -43,19 +53,21 @@ def get_mail():
                             for subpart in part.get_payload():
                                 if subpart.is_multipart():
                                     for subsubpart in subpart.get_payload():
-                                        body = body + str(subsubpart.get_payload(decode=False)) + '\n'
+                                        body = body + \
+                                            getStr(subsubpart.get_payload(
+                                                decode=True)) + '\n'
                                 else:
-                                    body = body + str(subpart.get_payload(decode=False)) + '\n'
+                                    body = body + \
+                                        getStr(subpart.get_payload(
+                                            decode=True)) + '\n'
                         else:
-                            body = body + str(part.get_payload(decode=False)) + '\n'
+                            body = body + \
+                                getStr(part.get_payload(decode=True)) + '\n'
                 else:
-                    body = body + str(message.get_payload(decode=False)) + '\n'
+                    body = body + \
+                        getStr(message.get_payload(decode=True)) + '\n'
 
                 mail_content = body
-                try:
-                    mail_content = base64.b64decode(body).decode('utf-8')
-                except:
-                    pass
 
                 print(f'From: {mail_from}')
                 print(f'Subject: {mail_subject}')
