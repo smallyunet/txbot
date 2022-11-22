@@ -10,8 +10,8 @@ import telegram as tb
 def get_mail():
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    print("get mail start at ", now)
-    tb.send_by_bot("get mail")
+    print("Getting mail...", now)
+    tb.send_by_bot("Getting mail...")
 
     mail = imaplib.IMAP4_SSL(cfg.mail_server, cfg.mail_server_port)
     mail.login(cfg.mail_address, cfg.mail_password)
