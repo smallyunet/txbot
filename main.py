@@ -1,14 +1,17 @@
-
-import schedule
-import time
+import sys
+import os
 import datetime
 
+import telegram as tg
+import task as t
 
-import bi_mail as bm
-
-schedule.every().hour.at(":03").do(bm.get_mail)
-print("Started at " + str(datetime.datetime.now()))
-
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+if __name__ == '__main__':
+    try:
+        t.job()
+    except KeyboardInterrupt:
+        print("I'm exiting...", datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        tg.send_by_bot("I'm exiting...")    
+        try:
+            sys.exit(0)
+        except SystemExit:
+            os._exit(0)

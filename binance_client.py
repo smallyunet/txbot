@@ -1,9 +1,9 @@
-import math
 from binance.spot import Spot
 from binance.client import Client
 
 import config as cfg
-import telegram_bot as tb
+import telegram as tg
+
 
 def make_order(type):
     spot = Spot()
@@ -38,5 +38,5 @@ def make_order(type):
 
     response = spot.new_order(**params)
     print(response)
-    
-    tb.send_to_telegram(response)
+
+    tg.send_by_bot(response)

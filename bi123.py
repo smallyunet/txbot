@@ -3,16 +3,18 @@ import imaplib
 import datetime
 
 import config as cfg
-import biance_order as bo
-import telegram_bot as tb
+import binance_client as bc
+import telegram as tb
 
 
 def get_mail():
-    print("---- running at " + str(datetime.datetime.now()) + " ----")
-    tb.send_to_telegram("running at " + str(datetime.datetime.now()))
+    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    mail = imaplib.IMAP4_SSL(cfg.SERVER, cfg.PORT)
-    mail.login(cfg.EMAIL, cfg.PASSWORD)
+    print("get mail start at ", now)
+    tb.send_by_bot("get mail")
+
+    mail = imaplib.IMAP4_SSL(cfg.mail_server, cfg.mail_server_port)
+    mail.login(cfg.mail_address, cfg.mail_password)
     mail.select('inbox')
 
     all = 'ALL'
@@ -46,10 +48,10 @@ def get_mail():
                 print(f'Subject: {mail_subject}')
                 print(f'Content: {mail_content}')
 
-                tb.send_to_telegram(
+                tb.send_by_bot(
                     f'From: {mail_from}\nSubject: {mail_subject}\nContent: {mail_content}')
 
                 if mail_content.includs('看涨'):
-                    bo.make_order('buy')
+                    bc.make_order('buy')
                 if mail_content.includs('看跌'):
-                    bo.make_order('sell')
+                    bc.make_order('sell')
