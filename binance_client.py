@@ -36,7 +36,11 @@ def make_order(type):
             'quoteOrderQty': "{:.2f}".format(eth_balance * float(price['price'])),
         }
 
-    response = spot.new_order(**params)
-    print(response)
+    response = ""
+    try:
+        response = spot.new_order(**params)
+    except Exception as e:
+        response = e.__str__()
 
+    print(response)
     tg.send_by_bot(response)

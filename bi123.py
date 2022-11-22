@@ -1,3 +1,4 @@
+import base64
 import email
 import imaplib
 import datetime
@@ -35,14 +36,26 @@ def get_mail():
                 mail_from = message['from']
                 mail_subject = message['subject']
 
+                body = ""
                 if message.is_multipart():
-                    mail_content = ''
-
-                    for part in message.get_payload():
-                        if part.get_content_type() == 'text/plain':
-                            mail_content += part.get_payload()
+                    for part in message.walk():
+                        if part.is_multipart():
+                            for subpart in part.get_payload():
+                                if subpart.is_multipart():
+                                    for subsubpart in subpart.get_payload():
+                                        body = body + str(subsubpart.get_payload(decode=False)) + '\n'
+                                else:
+                                    body = body + str(subpart.get_payload(decode=False)) + '\n'
+                        else:
+                            body = body + str(part.get_payload(decode=False)) + '\n'
                 else:
-                    mail_content = message.get_payload()
+                    body = body + str(message.get_payload(decode=False)) + '\n'
+
+                mail_content = body
+                try:
+                    mail_content = base64.b64decode(body).decode('utf-8')
+                except:
+                    pass
 
                 print(f'From: {mail_from}')
                 print(f'Subject: {mail_subject}')
@@ -51,7 +64,7 @@ def get_mail():
                 tb.send_by_bot(
                     f'From: {mail_from}\nSubject: {mail_subject}\nContent: {mail_content}')
 
-                if mail_content.includs('看涨'):
+                if "看涨" in mail_content:
                     bc.make_order('buy')
-                if mail_content.includs('看跌'):
+                if "看跌" in mail_content:
                     bc.make_order('sell')
