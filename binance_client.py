@@ -6,6 +6,9 @@ import telegram as tg
 
 
 def make_order(type):
+    if not cfg.binance_enable:
+        return
+
     spot = Spot()
     spot = Spot(key=cfg.biance_api_key, secret=cfg.biance_secrect_key)
 

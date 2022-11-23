@@ -3,9 +3,10 @@ import config as cfg
 
 
 def send_by_bot(message):
+    if not cfg.telegram_enable:
+        return
 
     url = f'https://api.telegram.org/bot{cfg.telegram_api_token}/sendMessage'
-
     try:
         response = requests.post(
             url, json={'chat_id': cfg.telegram_chat_id, 'text': message})

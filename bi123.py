@@ -26,9 +26,7 @@ def get_mail():
     mail.login(cfg.mail_address, cfg.mail_password)
     mail.select('inbox')
 
-    all = 'ALL'
-    unseen = '(UNSEEN)'
-    status, data = mail.search(None, unseen)
+    status, data = mail.search(None, cfg.mail_list_type)
     mail_ids = []
     for block in data:
         # b'1 2 3'.split() => [b'1', b'2', b'3']
@@ -49,6 +47,9 @@ def get_mail():
                 body = ""
                 if message.is_multipart():
                     for part in message.walk():
+                        content_type = part.get_content_type()
+                        if content_type != "text/html":
+                            continue
                         if part.is_multipart():
                             for subpart in part.get_payload():
                                 if subpart.is_multipart():
