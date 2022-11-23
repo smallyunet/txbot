@@ -10,8 +10,9 @@ if __name__ == '__main__':
     try:
         now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        msg = f'Mail list type: {cfg.mail_list_type}, Telegram bot enabled: {cfg.telegram_enable}, Binance enabled: {cfg.binance_enable}'
-        print(f'Start at {now}, {msg}')
+
+        msg = f'Start at {now}, Mail list type: {cfg.mail_list_type}, Telegram bot enabled: {cfg.telegram_enable}, Binance enabled: {cfg.binance_enable}'
+        print(msg)
         tg.send_by_bot(msg)
 
         t.job()
