@@ -70,12 +70,12 @@ def get_mail():
 
                 mail_content = body
 
-                print(f'From: {mail_from}')
-                print(f'Subject: {mail_subject}')
-                print(f'Content: {mail_content}')
+                msg = f'From: {mail_from}\n'
+                msg += f'Subject: {mail_subject}\n'
+                msg += f'Content: {mail_content}\n'
 
-                tb.send_by_bot(
-                    f'From: {mail_from}\nSubject: {mail_subject}\nContent: {mail_content}')
+                print(msg)
+                tb.send_by_bot(msg)
 
                 if "看涨" in mail_content:
                     bc.make_order('buy')
