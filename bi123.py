@@ -69,6 +69,9 @@ def get_mail():
                         getStr(message.get_payload(decode=True)) + '\n'
 
                 mail_content = body
+                mail_content = mail_content.replace('<br/>', '\n')
+                mail_content = mail_content.replace('<br>', '\n')
+                mail_content = mail_content.replace('<br />', '\n')
 
                 msg = f'From: {mail_from}\n'
                 msg += f'Subject: {mail_subject}\n'
