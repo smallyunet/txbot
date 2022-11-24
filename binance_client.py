@@ -36,7 +36,7 @@ def make_order(type):
             'symbol': 'ETHUSDT',
             'side': 'SELL',
             'type': 'MARKET',
-            'quoteOrderQty': "{:.2f}".format(eth_balance * float(price['price'])),
+            'quoteOrderQty': "{:.2f}".format(eth_balance * float(price['price']) * 0.99),
         }
 
     response = ""
