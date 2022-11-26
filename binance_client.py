@@ -5,7 +5,7 @@ import config as cfg
 import telegram as tg
 
 
-def make_order(type, symbol, quoteOrderQty):
+def make_order(type, symbol, quoteOrderQty=0):
     if not cfg.binance_enable:
         return
 
