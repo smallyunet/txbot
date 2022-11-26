@@ -5,38 +5,40 @@ import config as cfg
 import telegram as tg
 
 
-def make_order(type):
+def make_order(type, symbol, quoteOrderQty):
     if not cfg.binance_enable:
         return
 
+    msg = f'Make order: type: {type}, symbol: {symbol}, quoteOrderQty: {quoteOrderQty}\n'
+    tg.send_by_bot(msg)
+
     spot = Spot()
     spot = Spot(key=cfg.biance_api_key, secret=cfg.biance_secrect_key)
-
     client = Client(cfg.biance_api_key, cfg.biance_secrect_key)
 
     balances = spot.account()['balances']
-    eth_balance = float([x['free']
-                        for x in balances if x['asset'] == 'ETH'][0])
+    symbol_balance = float([x['free']
+                            for x in balances if x['asset'] == symbol][0])
     usdt_balance = float([x['free']
                          for x in balances if x['asset'] == 'USDT'][0])
+    msg = f'Before ordered: {symbol} balance: {symbol_balance}, USDT balance: {usdt_balance}\n'
+    tg.send_by_bot(msg)
 
-    print(eth_balance, usdt_balance)
-
+    symbolUSDT = symbol + 'USDT'
     if type == "buy":
         params = {
-            'symbol': 'ETHUSDT',
+            'symbol': symbolUSDT,
             'side': 'BUY',
             'type': 'MARKET',
-            'quoteOrderQty': usdt_balance,
+            'quoteOrderQty': quoteOrderQty,
         }
-
     if type == "sell":
-        price = client.get_avg_price(symbol='ETHUSDT')
+        price = client.get_avg_price(symbol=symbolUSDT)
         params = {
-            'symbol': 'ETHUSDT',
+            'symbol': symbolUSDT,
             'side': 'SELL',
             'type': 'MARKET',
-            'quoteOrderQty': "{:.2f}".format(eth_balance * float(price['price']) * 0.99),
+            'quoteOrderQty': "{:.2f}".format(symbol_balance * float(price['price']) * 0.99),
         }
 
     response = ""
@@ -44,6 +46,12 @@ def make_order(type):
         response = spot.new_order(**params)
     except Exception as e:
         response = e.__str__()
-
-    print(response)
     tg.send_by_bot(response)
+
+    balances = spot.account()['balances']
+    symbol_balance = float([x['free']
+                            for x in balances if x['asset'] == symbol][0])
+    usdt_balance = float([x['free']
+                         for x in balances if x['asset'] == 'USDT'][0])
+    msg = f'After ordered: {symbol} balance: {symbol_balance}, USDT balance: {usdt_balance}\n'
+    tg.send_by_bot(msg)
