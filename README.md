@@ -65,4 +65,4 @@ biance_secrect_key = ''
 
 ## Preview
 
-![preview.jpg](./preview.jpg)
+<img src="./preview.jpg" width="50%">
