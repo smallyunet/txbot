@@ -1,6 +1,7 @@
 import json
 from binance.spot import Spot
 from binance.client import Client
+import datetime
 
 import config as cfg
 import telegram as tg
@@ -10,7 +11,7 @@ def make_order(type, symbol, quoteOrderQty=0):
     if not cfg.binance_enable:
         return
 
-    msg = f'Make order:\n'
+    msg = f'[Make order]\n'
     msg += f'type: {type}\n'
     msg += f'symbol: {symbol}\n'
     msg += f'quoteOrderQty: {quoteOrderQty}\n'
@@ -25,7 +26,7 @@ def make_order(type, symbol, quoteOrderQty=0):
                             for x in balances if x['asset'] == symbol][0])
     usdt_balance = float([x['free']
                          for x in balances if x['asset'] == 'USDT'][0])
-    msg = f'Before ordered: \n'
+    msg = f'[Before ordered]\n'
     msg += f'{symbol} balance: {symbol_balance}\n'
     msg += f'USDT balance: {usdt_balance}\n'
     tg.send_by_bot(msg)
@@ -59,7 +60,7 @@ def make_order(type, symbol, quoteOrderQty=0):
                             for x in balances if x['asset'] == symbol][0])
     usdt_balance = float([x['free']
                          for x in balances if x['asset'] == 'USDT'][0])
-    msg = f'After ordered:\n'
+    msg = f'[After ordered]\n'
     msg += f'{symbol} balance: {symbol_balance}\n'
     msg += f'USDT balance: {usdt_balance}\n'
     tg.send_by_bot(msg)

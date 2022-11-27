@@ -80,14 +80,8 @@ def get_mail():
                 print(msg)
                 tb.send_by_bot(msg)
 
-                eth = "ETH"
-                if "看涨" in mail_content and eth in mail_content:
-                    bc.make_order('buy', eth, 40)
-                if "看跌" in mail_content and eth in mail_content:
-                    bc.make_order('sell', eth)
-
-                doge = "DOGE"
-                if "看涨" in mail_content and doge in mail_content:
-                    bc.make_order('buy', doge, 40)
-                if "看跌" in mail_content and doge in mail_content:
-                    bc.make_order('sell', doge)
+                for k, v in cfg.tokens.items():
+                    if "看涨" in mail_content and k in mail_content:
+                        bc.make_order('buy', k, v)
+                    if "看跌" in mail_content and k in mail_content:
+                        bc.make_order('sell', k)
