@@ -1,3 +1,4 @@
+import json
 from binance.spot import Spot
 from binance.client import Client
 
@@ -46,7 +47,7 @@ def make_order(type, symbol, quoteOrderQty=0):
         response = spot.new_order(**params)
     except Exception as e:
         response = e.__str__()
-    tg.send_by_bot(response)
+    tg.send_by_bot(json.dumps(response, indent=2))
 
     balances = spot.account()['balances']
     symbol_balance = float([x['free']
