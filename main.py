@@ -5,6 +5,7 @@ import datetime
 import telegram as tg
 import config as cfg
 import task as t
+import bi123 as bm
 
 if __name__ == '__main__':
     try:
@@ -21,6 +22,10 @@ if __name__ == '__main__':
         print(msg)
         tg.send_by_bot(msg)
 
+        # run once at start
+        bm.get_mail()
+        
+        # start schedule
         t.job()
 
     except KeyboardInterrupt:
