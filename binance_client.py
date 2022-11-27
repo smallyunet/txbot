@@ -10,7 +10,10 @@ def make_order(type, symbol, quoteOrderQty=0):
     if not cfg.binance_enable:
         return
 
-    msg = f'Make order: type: {type}, symbol: {symbol}, quoteOrderQty: {quoteOrderQty}\n'
+    msg = f'Make order:\n'
+    msg += f'type: {type}\n'
+    msg += f'symbol: {symbol}\n'
+    msg += f'quoteOrderQty: {quoteOrderQty}\n'
     tg.send_by_bot(msg)
 
     spot = Spot()
@@ -22,7 +25,9 @@ def make_order(type, symbol, quoteOrderQty=0):
                             for x in balances if x['asset'] == symbol][0])
     usdt_balance = float([x['free']
                          for x in balances if x['asset'] == 'USDT'][0])
-    msg = f'Before ordered: {symbol} balance: {symbol_balance}, USDT balance: {usdt_balance}\n'
+    msg = f'Before ordered: \n'
+    msg += f'{symbol} balance: {symbol_balance}\n'
+    msg += f'USDT balance: {usdt_balance}\n'
     tg.send_by_bot(msg)
 
     symbolUSDT = symbol + 'USDT'
@@ -54,5 +59,7 @@ def make_order(type, symbol, quoteOrderQty=0):
                             for x in balances if x['asset'] == symbol][0])
     usdt_balance = float([x['free']
                          for x in balances if x['asset'] == 'USDT'][0])
-    msg = f'After ordered: {symbol} balance: {symbol_balance}, USDT balance: {usdt_balance}\n'
+    msg = f'After ordered:\n'
+    msg += f'{symbol} balance: {symbol_balance}\n'
+    msg += f'USDT balance: {usdt_balance}\n'
     tg.send_by_bot(msg)
