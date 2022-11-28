@@ -61,6 +61,14 @@ telegram_chat_id = ''
 binance_enable = True
 biance_api_key = ''
 biance_secrect_key = ''
+
+# USDT
+tokens = {
+    "ETH": 0,
+    "DOGE": 0,
+    "COCOS": 0
+}
+token_remain_rate = 0.995
 ```
 
 ## Preview

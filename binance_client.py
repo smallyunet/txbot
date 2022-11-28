@@ -45,7 +45,7 @@ def make_order(type, symbol, quoteOrderQty=0):
             'symbol': symbolUSDT,
             'side': 'SELL',
             'type': 'MARKET',
-            'quoteOrderQty': "{:.2f}".format(symbol_balance * float(price['price']) * 0.99),
+            'quoteOrderQty': "{:.2f}".format(symbol_balance * float(price['price']) * cfg.token_remain_rate),
         }
 
     response = ""

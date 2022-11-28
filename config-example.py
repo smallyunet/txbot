@@ -22,3 +22,4 @@ tokens = {
     "DOGE": 0,
     "COCOS": 0
 }
+token_remain_rate = 0.995
