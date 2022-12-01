@@ -13,6 +13,7 @@ if __name__ == '__main__':
         msg = f'[Started]\n'
         msg += f'Mail list type: {cfg.mail_list_type}\n'
         msg += f'Telegram bot enabled: {cfg.telegram_enable}\n'
+        msg += f'Proxy enabled: {cfg.proxy_enable}\n'
         msg += f'Binance enabled: {cfg.binance_enable}\n'
         msg += f'Job minute: {cfg.job_minute}\n\n'
         msg += '[Tokens]\n'
