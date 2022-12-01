@@ -33,13 +33,14 @@ def make_order(type, symbol, quoteOrderQty=0):
     try:
         spot = Spot()
         spot = Spot(key=cfg.biance_api_key, secret=cfg.biance_secrect_key)
+        client = Client(cfg.biance_api_key, cfg.biance_secrect_key)
         if cfg.proxy_enable:
             proxies = {
                 'http': 'socks5://127.0.0.1:7891',
                 'https': 'socks5://127.0.0.1:7891'
             }
             spot = Spot(key=cfg.biance_api_key, secret=cfg.biance_secrect_key, proxies=proxies)
-        client = Client(cfg.biance_api_key, cfg.biance_secrect_key)
+            client = Client(cfg.biance_api_key, cfg.biance_secrect_key, proxies=proxies)
 
         status = client.get_account_status()
         msg = f'[Account status]\n'
