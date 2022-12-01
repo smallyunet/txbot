@@ -31,14 +31,19 @@ def make_order(type, symbol, quoteOrderQty=0):
     tg.send_by_bot(msg)
 
     try:
-        spot = Spot()
-        spot = Spot(key=cfg.biance_api_key, secret=cfg.biance_secrect_key)
-        client = Client(cfg.biance_api_key, cfg.biance_secrect_key)
-        if cfg.proxy_enable:
+        spot = None
+        client = None
+
+        if not cfg.proxy_enable:
+            spot = Spot()
+            spot = Spot(key=cfg.biance_api_key, secret=cfg.biance_secrect_key)
+            client = Client(cfg.biance_api_key, cfg.biance_secrect_key)
+        else: 
             proxies = {
                 'http': 'socks5://127.0.0.1:7891',
                 'https': 'socks5://127.0.0.1:7891'
             }
+            spot = Spot()
             spot = Spot(key=cfg.biance_api_key, secret=cfg.biance_secrect_key, proxies=proxies)
             client = Client(cfg.biance_api_key, cfg.biance_secrect_key, proxies=proxies)
 
