@@ -12,6 +12,7 @@ telegram_enable = True
 telegram_api_token = ''
 telegram_chat_id = ''
 
+proxy_enable = False
 binance_enable = True
 biance_api_key = ''
 biance_secrect_key = ''

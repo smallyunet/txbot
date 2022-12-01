@@ -45,7 +45,7 @@ def make_order(type, symbol, quoteOrderQty=0):
             }
             spot = Spot()
             spot = Spot(key=cfg.biance_api_key, secret=cfg.biance_secrect_key, proxies=proxies)
-            client = Client(cfg.biance_api_key, cfg.biance_secrect_key, proxies=proxies)
+            client = Client(cfg.biance_api_key, cfg.biance_secrect_key, requests_params={'proxies': proxies})
 
         status = client.get_account_status()
         msg = f'[Account status]\n'
