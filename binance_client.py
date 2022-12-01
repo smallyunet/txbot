@@ -35,6 +35,11 @@ def make_order(type, symbol, quoteOrderQty=0):
         spot = Spot(key=cfg.biance_api_key, secret=cfg.biance_secrect_key)
         client = Client(cfg.biance_api_key, cfg.biance_secrect_key)
 
+        status = client.get_account_status()
+        msg = f'[Account status]\n'
+        msg += f'status: {status}\n'
+        tg.send_by_bot(msg)
+
         symbol_balance, usdt_balance = getBalance(
             spot, symbol, '[Before ordered]')
 
