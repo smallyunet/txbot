@@ -13,14 +13,17 @@ telegram_api_token = ''
 telegram_chat_id = ''
 
 proxy_enable = False
+proxy_http = 'socks5://127.0.0.1:7891'
+proxy_https = 'socks5://127.0.0.1:7891'
+
 binance_enable = True
 biance_api_key = ''
 biance_secrect_key = ''
 
 # USDT
 tokens = {
-    "ETH": 0,
-    "DOGE": 0,
-    "COCOS": 0
+    "ETH": 11,
+    "DOGE": 11,
+    "SHIB": 11
 }
 token_remain_rate = 0.995

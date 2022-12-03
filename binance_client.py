@@ -7,27 +7,23 @@ import config as cfg
 import telegram as tg
 
 
-def getBalance(spot, symbol, msgPrefix):
+def getBalance(spot, symbol):
     balances = spot.account()['balances']
     symbol_balance = float([x['free']
                             for x in balances if x['asset'] == symbol][0])
     usdt_balance = float([x['free']
                           for x in balances if x['asset'] == 'USDT'][0])
-    msg = f'{msgPrefix}\n'
-    msg += f'{symbol} balance: {symbol_balance}\n'
-    msg += f'USDT balance: {usdt_balance}\n'
-    tg.send_by_bot(msg)
     return symbol_balance, usdt_balance
 
 
-def make_order(type, symbol, qtyRate=0):
+def make_order(type, symbol, qty=0):
     if not cfg.binance_enable:
         return
 
     msg = f'[Make order]\n'
     msg += f'type: {type}\n'
     msg += f'symbol: {symbol}\n'
-    msg += f'quoteOrderQty: {qtyRate}\n'
+    msg += f'quoteOrderQty: {qty}\n'
     tg.send_by_bot(msg)
 
     try:
@@ -40,8 +36,8 @@ def make_order(type, symbol, qtyRate=0):
             client = Client(cfg.biance_api_key, cfg.biance_secrect_key)
         else:
             proxies = {
-                'http': 'socks5://127.0.0.1:7891',
-                'https': 'socks5://127.0.0.1:7891'
+                'http': cfg.proxy_http,
+                'https': cfg.proxy_https
             }
             spot = Spot()
             spot = Spot(key=cfg.biance_api_key,
@@ -54,8 +50,7 @@ def make_order(type, symbol, qtyRate=0):
         msg += f'status: {status}\n'
         tg.send_by_bot(msg)
 
-        symbol_balance, usdt_balance = getBalance(
-            spot, symbol, '[Before ordered]')
+        symbol_balance, usdt_balance = getBalance(spot, symbol)
 
         symbolUSDT = symbol + 'USDT'
         if type == "buy":
@@ -63,7 +58,7 @@ def make_order(type, symbol, qtyRate=0):
                 'symbol': symbolUSDT,
                 'side': 'BUY',
                 'type': 'MARKET',
-                'quoteOrderQty': "{:.2f}".format(usdt_balance * qtyRate * cfg.token_remain_rate),
+                'quoteOrderQty': qty,
             }
         if type == "sell":
             price = client.get_avg_price(symbol=symbolUSDT)
@@ -91,8 +86,7 @@ def make_order(type, symbol, qtyRate=0):
             response = e.__str__()
             tg.send_by_bot(response)
 
-        symbol_balance, usdt_balance = getBalance(
-            spot, symbol, '[After ordered]')
+        symbol_balance, usdt_balance = getBalance(spot, symbol)
 
     except Exception as e:
         tg.send_by_bot(f'[In Binance Client Error]\n{e.__str__()}')
