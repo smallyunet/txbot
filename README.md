@@ -65,9 +65,9 @@ biance_secrect_key = ''
 
 # USDT
 tokens = {
-    "ETH": 0,
-    "DOGE": 0,
-    "COCOS": 0
+    "ETH": 0.4,
+    "DOGE": 0.3,
+    "COCOS": 0.2
 }
 token_remain_rate = 0.995
 ```
