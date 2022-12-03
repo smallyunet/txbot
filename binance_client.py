@@ -20,14 +20,14 @@ def getBalance(spot, symbol, msgPrefix):
     return symbol_balance, usdt_balance
 
 
-def make_order(type, symbol, quoteOrderQty=0):
+def make_order(type, symbol, qtyRate=0):
     if not cfg.binance_enable:
         return
 
     msg = f'[Make order]\n'
     msg += f'type: {type}\n'
     msg += f'symbol: {symbol}\n'
-    msg += f'quoteOrderQty: {quoteOrderQty}\n'
+    msg += f'quoteOrderQty: {qtyRate}\n'
     tg.send_by_bot(msg)
 
     try:
@@ -38,14 +38,16 @@ def make_order(type, symbol, quoteOrderQty=0):
             spot = Spot()
             spot = Spot(key=cfg.biance_api_key, secret=cfg.biance_secrect_key)
             client = Client(cfg.biance_api_key, cfg.biance_secrect_key)
-        else: 
+        else:
             proxies = {
                 'http': 'socks5://127.0.0.1:7891',
                 'https': 'socks5://127.0.0.1:7891'
             }
             spot = Spot()
-            spot = Spot(key=cfg.biance_api_key, secret=cfg.biance_secrect_key, proxies=proxies)
-            client = Client(cfg.biance_api_key, cfg.biance_secrect_key, requests_params={'proxies': proxies})
+            spot = Spot(key=cfg.biance_api_key,
+                        secret=cfg.biance_secrect_key, proxies=proxies)
+            client = Client(cfg.biance_api_key, cfg.biance_secrect_key,
+                            requests_params={'proxies': proxies})
 
         status = client.get_account_status()
         msg = f'[Account status]\n'
@@ -61,7 +63,7 @@ def make_order(type, symbol, quoteOrderQty=0):
                 'symbol': symbolUSDT,
                 'side': 'BUY',
                 'type': 'MARKET',
-                'quoteOrderQty': quoteOrderQty,
+                'quoteOrderQty': "{:.2f}".format(usdt_balance * qtyRate * cfg.token_remain_rate),
             }
         if type == "sell":
             price = client.get_avg_price(symbol=symbolUSDT)
@@ -72,7 +74,6 @@ def make_order(type, symbol, quoteOrderQty=0):
                 'quoteOrderQty': "{:.2f}".format(symbol_balance * float(price['price']) * cfg.token_remain_rate),
             }
 
-        response = ""
         try:
             response = spot.new_order(**params)
             tg.send_by_bot(json.dumps(response, indent=2))

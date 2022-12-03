@@ -17,9 +17,6 @@ def getStr(s):
 
 
 def get_mail():
-    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    print("Getting mail...", now)
     tb.send_by_bot("Getting mail...")
 
     mail = imaplib.IMAP4_SSL(cfg.mail_server, cfg.mail_server_port)
@@ -76,8 +73,6 @@ def get_mail():
                 msg = f'From: {mail_from}\n'
                 msg += f'Subject: {mail_subject}\n'
                 msg += f'Content: {mail_content}\n'
-
-                print(msg)
                 tb.send_by_bot(msg)
 
                 for k, v in cfg.tokens.items():
