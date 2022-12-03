@@ -69,10 +69,11 @@ def make_order(type, symbol, qtyRate=0):
             price = client.get_avg_price(symbol=symbolUSDT)
             qty = symbol_balance * \
                 float(price['price']) * cfg.token_remain_rate
+            qtyStr = "{:.2f}".format(qty)
             # params limit
             if qty < 10:
                 msg = f'[Order End]\n'
-                msg += f'qty: {qty}\n'
+                msg += f'qty: {qtyStr}\n'
                 msg += f'no need to sell\n'
                 tg.send_by_bot(msg)
                 return
@@ -80,7 +81,7 @@ def make_order(type, symbol, qtyRate=0):
                 'symbol': symbolUSDT,
                 'side': 'SELL',
                 'type': 'MARKET',
-                'quoteOrderQty': "{:.2f}".format(qty),
+                'quoteOrderQty': qtyStr,
             }
 
         try:
