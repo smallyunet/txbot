@@ -77,4 +77,4 @@ token_remain_rate = 0.995
 
 ## Preview
 
-<img src="./preview.jpg" width="50%">
+<img src="./README.jpg" width="50%">
