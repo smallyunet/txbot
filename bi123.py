@@ -3,6 +3,7 @@ import email
 import imaplib
 import datetime
 from email.header import decode_header
+import time
 
 import config as cfg
 import binance_client as bc
@@ -16,7 +17,7 @@ def getStr(s):
         return s
 
 
-def get_mail():
+def get_mail(retry = 0):
     try:
         tb.send_by_bot("Getting mail...")
 
@@ -83,3 +84,7 @@ def get_mail():
                             bc.make_order('sell', k)
     except Exception as e:
         tb.send_by_bot(e.__str__())
+
+        if retry < 3:
+            time.sleep(60)
+            get_mail(retry + 1)
