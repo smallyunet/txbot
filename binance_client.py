@@ -11,9 +11,35 @@ def getBalance(spot, symbol):
     balances = spot.account()['balances']
     symbol_balance = float([x['free']
                             for x in balances if x['asset'] == symbol][0])
-    usdt_balance = float([x['free']
-                          for x in balances if x['asset'] == 'USDT'][0])
-    return symbol_balance, usdt_balance
+    return symbol_balance
+
+
+def getClient():
+    spot = None
+    client = None
+
+    if not cfg.proxy_enable:
+        spot = Spot()
+        spot = Spot(key=cfg.biance_api_key, secret=cfg.biance_secrect_key)
+        client = Client(cfg.biance_api_key, cfg.biance_secrect_key)
+    else:
+        proxies = {
+            'http': cfg.proxy_http,
+            'https': cfg.proxy_https
+        }
+        spot = Spot()
+        spot = Spot(key=cfg.biance_api_key,
+                    secret=cfg.biance_secrect_key, proxies=proxies)
+        client = Client(cfg.biance_api_key, cfg.biance_secrect_key,
+                        requests_params={'proxies': proxies})
+    return spot, client
+
+
+def getAccountStatus(client):
+    status = client.get_account_status()
+    msg = f'[Account status]\n'
+    msg += f'status: {status}\n'
+    tg.send_by_bot(msg)
 
 
 def make_order(type, symbol, qty=0):
@@ -27,30 +53,10 @@ def make_order(type, symbol, qty=0):
     tg.send_by_bot(msg)
 
     try:
-        spot = None
-        client = None
+        spot, client = getClient()
 
-        if not cfg.proxy_enable:
-            spot = Spot()
-            spot = Spot(key=cfg.biance_api_key, secret=cfg.biance_secrect_key)
-            client = Client(cfg.biance_api_key, cfg.biance_secrect_key)
-        else:
-            proxies = {
-                'http': cfg.proxy_http,
-                'https': cfg.proxy_https
-            }
-            spot = Spot()
-            spot = Spot(key=cfg.biance_api_key,
-                        secret=cfg.biance_secrect_key, proxies=proxies)
-            client = Client(cfg.biance_api_key, cfg.biance_secrect_key,
-                            requests_params={'proxies': proxies})
-
-        status = client.get_account_status()
-        msg = f'[Account status]\n'
-        msg += f'status: {status}\n'
-        tg.send_by_bot(msg)
-
-        symbol_balance, usdt_balance = getBalance(spot, symbol)
+        getAccountStatus(client)
+        symbol_balance = getBalance(spot, symbol)
 
         symbolUSDT = symbol + 'USDT'
         if type == "buy":
@@ -85,8 +91,6 @@ def make_order(type, symbol, qty=0):
         except Exception as e:
             response = e.__str__()
             tg.send_by_bot(response)
-
-        symbol_balance, usdt_balance = getBalance(spot, symbol)
 
     except Exception as e:
         tg.send_by_bot(f'[In Binance Client Error]\n{e.__str__()}')

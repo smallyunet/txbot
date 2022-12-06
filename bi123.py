@@ -17,7 +17,7 @@ def getStr(s):
         return s
 
 
-def get_mail(retry = 0):
+def get_mail(retry=0):
     try:
         tb.send_by_bot("Getting mail...")
 
@@ -39,7 +39,8 @@ def get_mail(retry = 0):
                     message = email.message_from_bytes(response_part[1])
 
                     mail_from, encoding = decode_header(message["From"])[0]
-                    mail_subject, encoding = decode_header(message["Subject"])[0]
+                    mail_subject, encoding = decode_header(
+                        message["Subject"])[0]
                     mail_from = getStr(mail_from)
                     mail_subject = getStr(mail_subject)
 
@@ -62,7 +63,8 @@ def get_mail(retry = 0):
                                                 decode=True)) + '\n'
                             else:
                                 body = body + \
-                                    getStr(part.get_payload(decode=True)) + '\n'
+                                    getStr(part.get_payload(
+                                        decode=True)) + '\n'
                     else:
                         body = body + \
                             getStr(message.get_payload(decode=True)) + '\n'
@@ -82,6 +84,14 @@ def get_mail(retry = 0):
                             bc.make_order('buy', k, v)
                         if "看跌" in mail_content and k in mail_content:
                             bc.make_order('sell', k)
+
+        # get balance after order
+        msg = f'[All balance]\n'
+        for k, v in cfg.tokens.items():
+            balance = bc.get_balance(k)
+            msg += f'{k}: {balance}\n'
+        tb.send_by_bot(msg)
+
     except Exception as e:
         tb.send_by_bot(e.__str__())
 
