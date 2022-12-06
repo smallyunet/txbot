@@ -91,7 +91,7 @@ def get_mail(retry=0):
         msg = f'[All balance]\n'
         spot, client = bc.get_client()
         for k, v in cfg.tokens.items():
-            balance, ubalance = bc.get_balance(spot, k)
+            balance, ubalance = bc.get_balance(client, spot, k)
             msg += f'{k}: {ubalance}\n'
         tb.send_by_bot(msg)
 
