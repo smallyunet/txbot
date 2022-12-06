@@ -35,65 +35,70 @@ def get_mail(retry=0):
             status, data = mail.fetch(i, '(RFC822)')
 
             for response_part in data:
-                if isinstance(response_part, tuple):
-                    message = email.message_from_bytes(response_part[1])
+                if not isinstance(response_part, tuple):
+                    continue
 
-                    mail_from, encoding = decode_header(message["From"])[0]
-                    mail_subject, encoding = decode_header(
-                        message["Subject"])[0]
-                    mail_from = getStr(mail_from)
-                    mail_subject = getStr(mail_subject)
+                message = email.message_from_bytes(response_part[1])
 
-                    body = ""
-                    if message.is_multipart():
-                        for part in message.walk():
-                            content_type = part.get_content_type()
-                            if content_type != "text/html":
-                                continue
-                            if part.is_multipart():
-                                for subpart in part.get_payload():
-                                    if subpart.is_multipart():
-                                        for subsubpart in subpart.get_payload():
-                                            body = body + \
-                                                getStr(subsubpart.get_payload(
-                                                    decode=True)) + '\n'
-                                    else:
+                mail_from, encoding = decode_header(message["From"])[0]
+                mail_subject, encoding = decode_header(
+                    message["Subject"])[0]
+                mail_from = getStr(mail_from)
+                mail_subject = getStr(mail_subject)
+
+                body = ""
+                if message.is_multipart():
+                    for part in message.walk():
+                        content_type = part.get_content_type()
+                        if content_type != "text/html":
+                            continue
+                        if part.is_multipart():
+                            for subpart in part.get_payload():
+                                if subpart.is_multipart():
+                                    for subsubpart in subpart.get_payload():
                                         body = body + \
-                                            getStr(subpart.get_payload(
+                                            getStr(subsubpart.get_payload(
                                                 decode=True)) + '\n'
-                            else:
-                                body = body + \
-                                    getStr(part.get_payload(
-                                        decode=True)) + '\n'
-                    else:
-                        body = body + \
-                            getStr(message.get_payload(decode=True)) + '\n'
+                                else:
+                                    body = body + \
+                                        getStr(subpart.get_payload(
+                                            decode=True)) + '\n'
+                        else:
+                            body = body + \
+                                getStr(part.get_payload(
+                                    decode=True)) + '\n'
+                else:
+                    body = body + \
+                        getStr(message.get_payload(decode=True)) + '\n'
 
-                    mail_content = body
-                    mail_content = mail_content.replace('<br/>', '\n')
-                    mail_content = mail_content.replace('<br>', '\n')
-                    mail_content = mail_content.replace('<br />', '\n')
+                mail_content = body
+                mail_content = mail_content.replace('<br/>', '\n')
+                mail_content = mail_content.replace('<br>', '\n')
+                mail_content = mail_content.replace('<br />', '\n')
 
-                    msg = f'From: {mail_from}\n'
-                    msg += f'Subject: {mail_subject}\n'
-                    msg += f'Content: {mail_content}\n'
-                    tb.send_by_bot(msg)
+                msg = f'From: {mail_from}\n'
+                msg += f'Subject: {mail_subject}\n'
+                msg += f'Content: {mail_content}\n'
+                tb.send_by_bot(msg)
 
-                    for k, v in cfg.tokens.items():
-                        if "看涨" in mail_content and k in mail_content:
-                            bc.make_order('buy', k, v)
-                        if "看跌" in mail_content and k in mail_content:
-                            bc.make_order('sell', k)
+                for k, v in cfg.tokens.items():
+                    if "看涨" in mail_content and k in mail_content:
+                        bc.make_order('buy', k, v)
+                    if "看跌" in mail_content and k in mail_content:
+                        bc.make_order('sell', k)
 
         # get balance after order
         msg = f'[All balance]\n'
+        spot, client = bc.get_client()
         for k, v in cfg.tokens.items():
-            balance = bc.get_balance(k)
+            balance = bc.get_balance(spot, k)
             msg += f'{k}: {balance}\n'
         tb.send_by_bot(msg)
 
     except Exception as e:
-        tb.send_by_bot(e.__str__() + '\n[' + retry.__str__() + '/3]\n')
+        msg = f'Error: {e}\n'
+        msg += f'[{retry}/3]\n'
+        tb.send_by_bot(msg)
 
         if retry < 3:
             time.sleep(60)
