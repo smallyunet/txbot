@@ -7,11 +7,18 @@ import config as cfg
 import telegram as tg
 
 
-def get_balance(spot, symbol):
+def get_balance(client, spot, symbol):
     balances = spot.account()['balances']
     symbol_balance = float([x['free']
                             for x in balances if x['asset'] == symbol][0])
-    return symbol_balance
+    symbol_usdt_balance = 0
+    if symbol == 'USDT':
+        symbol_usdt_balance = symbol_balance
+    else:
+        symbolUSDT = symbol + 'USDT'
+        price = client.get_avg_price(symbol=symbolUSDT)
+        symbol_usdt_balance = symbol_balance * float(price['price'])
+    return symbol_balance, symbol_usdt_balance
 
 
 def get_client():
@@ -56,7 +63,7 @@ def make_order(type, symbol, qty=0):
         spot, client = get_client()
 
         get_account_status(client)
-        symbol_balance = get_balance(spot, symbol)
+        symbol_balance, u = get_balance(client, spot, symbol)
 
         symbolUSDT = symbol + 'USDT'
         if type == "buy":

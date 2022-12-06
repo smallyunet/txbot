@@ -91,8 +91,8 @@ def get_mail(retry=0):
         msg = f'[All balance]\n'
         spot, client = bc.get_client()
         for k, v in cfg.tokens.items():
-            balance = bc.get_balance(spot, k)
-            msg += f'{k}: {balance}\n'
+            balance, ubalance = bc.get_balance(spot, k)
+            msg += f'{k}: {ubalance}\n'
         tb.send_by_bot(msg)
 
     except Exception as e:
