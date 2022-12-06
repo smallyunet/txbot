@@ -93,7 +93,7 @@ def get_mail(retry=0):
         tb.send_by_bot(msg)
 
     except Exception as e:
-        tb.send_by_bot(e.__str__())
+        tb.send_by_bot(e.__str__() + '\n[' + retry.__str__() + '/3]\n')
 
         if retry < 3:
             time.sleep(60)
