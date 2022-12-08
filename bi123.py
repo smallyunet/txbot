@@ -88,11 +88,11 @@ def get_mail(retry=0):
                         bc.make_order('sell', k)
 
         # get balance after order
-        total = 0
         msg = f'[All balance]\n'
         spot, client = bc.get_client()
         balance, ubalance = bc.get_balance(client, spot, 'USDT')
         msg += f'USDT: {ubalance}\n'
+        total = ubalance
         for k, v in cfg.tokens.items():
             balance, ubalance = bc.get_balance(client, spot, k)
             msg += f'{k}: {ubalance}\n'
