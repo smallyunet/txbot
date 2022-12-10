@@ -93,6 +93,7 @@ def make_order(type, symbol, qty=0):
             }
 
         try:
+            params['recvWindow'] = 59999
             response = spot.new_order(**params)
             tg.send_by_bot(json.dumps(response, indent=2))
         except Exception as e:
