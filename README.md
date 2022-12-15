@@ -6,7 +6,7 @@ Get market signals from https://www.bi123.co and auto-make orders in Binance.
 
 Add the config file in the project folder:
 
-- Add a file named `config.py`
+- Add a file named `config.py` or execute the command `cp config-example.py config.py`
 
 Receive signal mail from bi123:
 
