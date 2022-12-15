@@ -5,6 +5,7 @@ import datetime
 
 import config as cfg
 import telegram as tg
+import db
 
 
 def get_balance(client, spot, symbol):
@@ -19,6 +20,22 @@ def get_balance(client, spot, symbol):
         price = client.get_avg_price(symbol=symbolUSDT)
         symbol_usdt_balance = symbol_balance * float(price['price'])
     return symbol_balance, symbol_usdt_balance
+
+
+def get_total_balance():
+    msg = f'[All balance]\n'
+    spot, client = get_client()
+    balance, ubalance = get_balance(client, spot, 'USDT')
+    msg += f'USDT: {ubalance}\n'
+    total = ubalance
+    for k, v in cfg.tokens.items():
+        balance, ubalance = get_balance(client, spot, k)
+        msg += f'{k}: {ubalance}\n'
+        total += ubalance
+    msg += f'Total: {total}\n'
+    tg.send_by_bot(msg)
+    db.insert('balance', datetime.datetime.now().strftime(
+        '%Y-%m-%d'), total)
 
 
 def get_client():

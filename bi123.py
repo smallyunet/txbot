@@ -8,6 +8,7 @@ import time
 import config as cfg
 import binance_client as bc
 import telegram as tb
+import db
 
 
 def getStr(s):
@@ -88,17 +89,9 @@ def get_mail(retry=0):
                         bc.make_order('sell', k)
 
         # get balance after order
-        msg = f'[All balance]\n'
-        spot, client = bc.get_client()
-        balance, ubalance = bc.get_balance(client, spot, 'USDT')
-        msg += f'USDT: {ubalance}\n'
-        total = ubalance
-        for k, v in cfg.tokens.items():
-            balance, ubalance = bc.get_balance(client, spot, k)
-            msg += f'{k}: {ubalance}\n'
-            total += ubalance
-        msg += f'Total: {total}\n'
-        tb.send_by_bot(msg)
+        bc.get_total_balance()
+        data = db.get_latest('balance', 7)
+        tb.send_by_bot(data)
 
     except Exception as e:
         msg = f'Error: {e}\n'
