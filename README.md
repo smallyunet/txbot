@@ -52,6 +52,9 @@ mail_server_port = 0
 # 'ALL' or '(UNSEEN)'
 mail_list_type = '(UNSEEN)'
 
+mail_address_verify = True
+mail_address_from = b'<subscription@bi123.co>'
+
 telegram_enable = True
 telegram_api_token = ''
 telegram_chat_id = ''

@@ -42,8 +42,7 @@ def get_mail(retry=0):
                 message = email.message_from_bytes(response_part[1])
 
                 mail_from, encoding = decode_header(message["From"])[0]
-                mail_subject, encoding = decode_header(
-                    message["Subject"])[0]
+                mail_subject, encoding = decode_header(message["Subject"])[0]
                 mail_from = getStr(mail_from)
                 mail_subject = getStr(mail_subject)
 
@@ -81,6 +80,22 @@ def get_mail(retry=0):
                 msg += f'Subject: {mail_subject}\n'
                 msg += f'Content: {mail_content}\n'
                 tb.send_by_bot(msg)
+
+                # verifiy mail address
+                wrong_address = False
+                if cfg.mail_address_verify:
+                    header_from = decode_header(message["From"])
+                    if header_from.__len__() > 1:
+                        from_address, encoding = header_from[1]
+                        if from_address.strip() != cfg.mail_address_from:
+                            wrong_address = True
+                    else:
+                        wrong_address = True
+
+                if wrong_address:
+                    msg = f'Get a wrong email from address: {from_address}\n'
+                    tb.send_by_bot(msg)
+                    continue
 
                 for k, v in cfg.tokens.items():
                     if "看涨" in mail_content and k in mail_content:
