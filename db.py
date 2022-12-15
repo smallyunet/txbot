@@ -17,7 +17,13 @@ def get_latest(file, num=1):
         json.dump({}, f)
         f.close()
     data = get_all(file)
-    return list(data.values())[-num:]
+    keys = list(data.keys())
+    keys.sort()
+    keys = keys[-num:]
+    result = {}
+    for key in keys:
+        result[key] = data[key]
+    return result
 
 def insert(file, key, value):
     if not os.path.isfile(f'{file}.json'):
