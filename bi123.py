@@ -106,7 +106,10 @@ def get_mail(retry=0):
         # get balance after order
         bc.get_total_balance()
         data = db.get_latest('balance', 7)
-        tb.send_by_bot(data)
+        msg = f'Balance history:\n'
+        for k, v in data.items():
+            msg += f'{k}: {v}\n'
+        tb.send_by_bot(msg)
 
     except Exception as e:
         msg = f'Error: {e}\n'
