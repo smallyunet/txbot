@@ -12,9 +12,11 @@ if __name__ == '__main__':
 
         msg = f'[Started]\n'
         msg += f'Mail list type: {cfg.mail_list_type}\n'
+        msg += f'Binance enabled: {cfg.binance_enable}\n'
         msg += f'Telegram bot enabled: {cfg.telegram_enable}\n'
         msg += f'Proxy enabled: {cfg.proxy_enable}\n'
-        msg += f'Binance enabled: {cfg.binance_enable}\n'
+        msg += f'Signal level: {cfg.mail_level}'
+        msg += f'Verify mail address: {cfg.mail_address_verify}'
         msg += '[Tokens]\n'
         for token in cfg.tokens:
             msg += f'{token}: {cfg.tokens[token]}\n'
