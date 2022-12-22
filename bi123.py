@@ -121,9 +121,9 @@ def get_mail(retry=0):
         tb.send_text(msg)
 
     except Exception as e:
-        msg = f'Error: {e}\n'
-        msg += f'[{retry}/3]\n'
-        tb.send_text(msg)
+        msg = f'*Error*: {e}\n'
+        msg += f'Retry: [{retry}/3]\n'
+        tb.send_md(msg)
 
         if retry < 3:
             time.sleep(60)
