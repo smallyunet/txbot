@@ -21,6 +21,8 @@ def get_balance(client, spot, symbol):
         symbol_usdt_balance = symbol_balance * float(price['price'])
     return symbol_balance, symbol_usdt_balance
 
+def format(b):
+    return "{:.{d}f}".format(b, d=cfg.token_balance_decimal)
 
 def get_total_balance():
     msg = f'''```
@@ -28,13 +30,13 @@ def get_total_balance():
 '''
     spot, client = get_client()
     balance, ubalance = get_balance(client, spot, 'USDT')
-    msg += f'USDT:  {"{:.2f}".format(ubalance)}\n'
+    msg += f'USDT:  {format(ubalance)}\n'
     total = ubalance
     for k, v in cfg.tokens.items():
         balance, ubalance = get_balance(client, spot, k)
-        msg += '{0: <7}'.format(k + ': ') + str("{:.2f}".format(ubalance)) + "\n"
+        msg += '{0: <7}'.format(k + ': ') + str(format(ubalance)) + "\n"
         total += ubalance
-    total = "{:.2f}".format(total)
+    total = format(total)
     msg += f'Total: {total}\n'
     msg += '```'
     tg.send_md(msg)

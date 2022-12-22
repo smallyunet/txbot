@@ -31,3 +31,4 @@ tokens = {
     "SHIB": 11
 }
 token_remain_rate = 0.995
+token_balance_decimal = 4
