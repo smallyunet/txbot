@@ -9,20 +9,23 @@ import bi123 as bm
 
 if __name__ == '__main__':
     try:
+        msg = f'''```
+[Started]
+Mail list type:       {cfg.mail_list_type}
+Binance enabled:      {cfg.binance_enable}
+Telegram bot enabled: {cfg.telegram_enable}
+Proxy enabled:        {cfg.proxy_enable}
+Signal level:         {cfg.mail_level}
+Verify mail address:  {cfg.mail_address_verify}
+```'''
+        tg.send_by_bot_html(msg)
+        print(msg)
 
-        msg = f'[Started]\n'
-        msg += f'Mail list type: {cfg.mail_list_type}\n'
-        msg += f'Binance enabled: {cfg.binance_enable}\n'
-        msg += f'Telegram bot enabled: {cfg.telegram_enable}\n'
-        msg += f'Proxy enabled: {cfg.proxy_enable}\n'
-        msg += f'Signal level: {cfg.mail_level}\n'
-        msg += f'Verify mail address: {cfg.mail_address_verify}\n'
-        msg += '[Tokens]\n'
+        msg = '[Token]\n'
         for token in cfg.tokens:
             msg += f'{token}: {cfg.tokens[token]}\n'
-
-        print(msg)
         tg.send_by_bot(msg)
+        print(msg)
 
         # run once at start
         bm.get_mail()

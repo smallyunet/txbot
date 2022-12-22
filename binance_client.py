@@ -30,7 +30,7 @@ def get_total_balance():
     total = ubalance
     for k, v in cfg.tokens.items():
         balance, ubalance = get_balance(client, spot, k)
-        msg += f'{k}: {ubalance}\n'
+        msg += f'{k}: {"{:.2f}".format(ubalance)}\n'
         total += ubalance
     msg += f'Total: {total}\n'
     tg.send_by_bot(msg)
