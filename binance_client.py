@@ -26,7 +26,7 @@ def get_total_balance():
     msg = f'[All balance]\n'
     spot, client = get_client()
     balance, ubalance = get_balance(client, spot, 'USDT')
-    msg += f'USDT: {ubalance}\n'
+    msg += f'USDT: {"{:.2f}".format(ubalance)}\n'
     total = ubalance
     for k, v in cfg.tokens.items():
         balance, ubalance = get_balance(client, spot, k)
