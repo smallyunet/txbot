@@ -18,13 +18,15 @@ Proxy enabled:        {cfg.proxy_enable}
 Signal level:         {cfg.mail_level}
 Verify mail address:  {cfg.mail_address_verify}
 ```'''
-        tg.send_by_bot_html(msg)
+        tg.send_md(msg)
         print(msg)
 
-        msg = '[Token]\n'
+        msg = '''```
+[Tokens]\n'''
         for token in cfg.tokens:
-            msg += f'{token}: {cfg.tokens[token]}\n'
-        tg.send_by_bot(msg)
+            msg += "{0: <7}".format(token + ": ") + str(cfg.tokens[token]) + "\n"
+        msg += '```'
+        tg.send_md(msg)
         print(msg)
 
         # run once at start

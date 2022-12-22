@@ -19,7 +19,7 @@ def send_by_bot(message):
     except Exception as e:
         print(e)
 
-def send_by_bot_html(message):
+def send_md(message):
     if not cfg.telegram_enable:
         return
 
