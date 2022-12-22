@@ -29,8 +29,9 @@ Push action to telegram bot:
 Install:
 
 ```
-pip install python-binance
 pip install -r requirements.txt
+pip install python-binance
+pip install lxml
 ```
 
 Run:
