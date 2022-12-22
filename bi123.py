@@ -98,9 +98,9 @@ def get_mail(retry=0):
                     continue
 
                 for k, v in cfg.tokens.items():
-                    if "看涨" in mail_content and k in mail_content:
+                    if "看涨" in mail_content and k in mail_content and cfg.mail_level in mail_content:
                         bc.make_order('buy', k, v)
-                    if "看跌" in mail_content and k in mail_content:
+                    if "看跌" in mail_content and k in mail_content and cfg.mail_level in mail_content:
                         bc.make_order('sell', k)
 
         # get balance after order

@@ -54,6 +54,8 @@ mail_list_type = '(UNSEEN)'
 
 mail_address_verify = True
 mail_address_from = b'<subscription@bi123.co>'
+# 1H 4H 1D
+mail_level = '4H'
 
 telegram_enable = True
 telegram_api_token = ''
