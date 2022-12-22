@@ -32,10 +32,10 @@ def get_total_balance():
         balance, ubalance = get_balance(client, spot, k)
         msg += f'{k}: {"{:.2f}".format(ubalance)}\n'
         total += ubalance
+    total = "{:.2f}".format(total)
     msg += f'Total: {total}\n'
     tg.send_by_bot(msg)
-    db.insert('balance', datetime.datetime.now().strftime(
-        '%Y-%m-%d'), "{:.2f}".format(total))
+    db.insert('balance', datetime.datetime.now().strftime('%Y-%m-%d'), total)
 
 
 def get_client():
