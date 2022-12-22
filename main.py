@@ -29,7 +29,7 @@ Verify mail address:  {cfg.mail_address_verify}
 
         # run once at start
         bm.get_mail()
-        
+
         # start schedule
         t.job()
 

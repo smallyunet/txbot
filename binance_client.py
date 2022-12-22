@@ -35,7 +35,7 @@ def get_total_balance():
     msg += f'Total: {total}\n'
     tg.send_by_bot(msg)
     db.insert('balance', datetime.datetime.now().strftime(
-        '%Y-%m-%d'), total)
+        '%Y-%m-%d'), "{:.2f}".format(total))
 
 
 def get_client():
