@@ -23,18 +23,21 @@ def get_balance(client, spot, symbol):
 
 
 def get_total_balance():
-    msg = f'[All balance]\n'
+    msg = f'''```
+[All balance]
+'''
     spot, client = get_client()
     balance, ubalance = get_balance(client, spot, 'USDT')
-    msg += f'USDT: {"{:.2f}".format(ubalance)}\n'
+    msg += f'USDT:  {"{:.2f}".format(ubalance)}\n'
     total = ubalance
     for k, v in cfg.tokens.items():
         balance, ubalance = get_balance(client, spot, k)
-        msg += f'{k}: {"{:.2f}".format(ubalance)}\n'
+        msg += '{0: <7}'.format(k + ': ') + str("{:.2f}".format(ubalance)) + "\n"
         total += ubalance
     total = "{:.2f}".format(total)
     msg += f'Total: {total}\n'
-    tg.send_by_bot(msg)
+    msg += '```'
+    tg.send_md(msg)
     db.insert('balance', datetime.datetime.now().strftime('%Y-%m-%d'), total)
 
 
