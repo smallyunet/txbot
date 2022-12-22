@@ -4,6 +4,8 @@ import imaplib
 import datetime
 from email.header import decode_header
 import time
+import re
+from bs4 import BeautifulSoup
 
 import config as cfg
 import binance_client as bc
@@ -20,7 +22,7 @@ def getStr(s):
 
 def get_mail(retry=0):
     try:
-        tb.send_by_bot("Getting mail...")
+        tb.send_text("Getting mail...")
 
         mail = imaplib.IMAP4_SSL(cfg.mail_server, cfg.mail_server_port)
         mail.login(cfg.mail_address, cfg.mail_password)
@@ -75,11 +77,17 @@ def get_mail(retry=0):
                 mail_content = mail_content.replace('<br/>', '\n')
                 mail_content = mail_content.replace('<br>', '\n')
                 mail_content = mail_content.replace('<br />', '\n')
+                # remove a tag
+                mail_content = BeautifulSoup(mail_content, "lxml").text
+
+                # filter not match level signal
+                if not cfg.mail_level in mail_content:
+                    continue
 
                 msg = f'From: {mail_from}\n'
                 msg += f'Subject: {mail_subject}\n'
                 msg += f'Content: {mail_content}\n'
-                tb.send_by_bot(msg)
+                tb.send_text(msg)
 
                 # verifiy mail address
                 wrong_address = False
@@ -94,14 +102,15 @@ def get_mail(retry=0):
 
                 if wrong_address:
                     msg = f'Get a wrong email from address: {from_address}\n'
-                    tb.send_by_bot(msg)
+                    tb.send_text(msg)
                     continue
 
                 for k, v in cfg.tokens.items():
-                    if "看涨" in mail_content and k in mail_content and cfg.mail_level in mail_content:
-                        bc.make_order('buy', k, v)
-                    if "看跌" in mail_content and k in mail_content and cfg.mail_level in mail_content:
-                        bc.make_order('sell', k)
+                    if k in mail_content:
+                        if cfg.mail_rais_text in mail_content:
+                            bc.make_order('buy', k, v)
+                        if cfg.mail_fall_text in mail_content:
+                            bc.make_order('sell', k)
 
         # get balance after order
         bc.get_total_balance()
@@ -109,12 +118,12 @@ def get_mail(retry=0):
         msg = f'Balance history:\n'
         for k, v in data.items():
             msg += f'{k}: {v}\n'
-        tb.send_by_bot(msg)
+        tb.send_text(msg)
 
     except Exception as e:
         msg = f'Error: {e}\n'
         msg += f'[{retry}/3]\n'
-        tb.send_by_bot(msg)
+        tb.send_text(msg)
 
         if retry < 3:
             time.sleep(60)

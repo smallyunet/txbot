@@ -19,15 +19,14 @@ Signal level:         {cfg.mail_level}
 Verify mail address:  {cfg.mail_address_verify}
 ```'''
         tg.send_md(msg)
-        print(msg)
 
         msg = '''```
 [Tokens]\n'''
         for token in cfg.tokens:
-            msg += "{0: <7}".format(token + ": ") + str(cfg.tokens[token]) + "\n"
+            msg += "{0: <7}".format(token + ": ") + \
+                str(cfg.tokens[token]) + "\n"
         msg += '```'
         tg.send_md(msg)
-        print(msg)
 
         # run once at start
         bm.get_mail()
@@ -38,7 +37,7 @@ Verify mail address:  {cfg.mail_address_verify}
     except KeyboardInterrupt:
         now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         print("I'm exiting...", now)
-        tg.send_by_bot("I'm exiting...")
+        tg.send_text("I'm exiting...")
 
         try:
             sys.exit(0)

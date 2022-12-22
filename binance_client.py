@@ -66,7 +66,7 @@ def get_account_status(client):
     status = client.get_account_status()
     msg = f'[Account status]\n'
     msg += f'status: {status}\n'
-    tg.send_by_bot(msg)
+    tg.send_text(msg)
 
 
 def make_order(type, symbol, qty=0):
@@ -77,7 +77,7 @@ def make_order(type, symbol, qty=0):
     msg += f'type: {type}\n'
     msg += f'symbol: {symbol}\n'
     msg += f'quoteOrderQty: {qty}\n'
-    tg.send_by_bot(msg)
+    tg.send_text(msg)
 
     try:
         spot, client = get_client()
@@ -103,7 +103,7 @@ def make_order(type, symbol, qty=0):
                 msg = f'[Order End]\n'
                 msg += f'qty: {qtyStr}\n'
                 msg += f'no need to sell\n'
-                tg.send_by_bot(msg)
+                tg.send_text(msg)
                 return
             params = {
                 'symbol': symbolUSDT,
@@ -115,10 +115,10 @@ def make_order(type, symbol, qty=0):
         try:
             params['recvWindow'] = 59999
             response = spot.new_order(**params)
-            tg.send_by_bot(json.dumps(response, indent=2))
+            tg.send_text(json.dumps(response, indent=2))
         except Exception as e:
             response = e.__str__()
-            tg.send_by_bot(response)
+            tg.send_text(response)
 
     except Exception as e:
-        tg.send_by_bot(f'[In Binance Client Error]\n{e.__str__()}')
+        tg.send_text(f'[In Binance Client Error]\n{e.__str__()}')

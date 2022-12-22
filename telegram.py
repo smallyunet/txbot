@@ -3,7 +3,8 @@ import requests
 import config as cfg
 
 
-def send_by_bot(message):
+def send_text(message):
+    print(f'Send telegram message: {message}')
     if not cfg.telegram_enable:
         return
 
@@ -19,7 +20,9 @@ def send_by_bot(message):
     except Exception as e:
         print(e)
 
+
 def send_md(message):
+    print(f'Send telegram message: {message}')
     if not cfg.telegram_enable:
         return
 
