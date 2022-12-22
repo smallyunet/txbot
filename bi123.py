@@ -107,9 +107,9 @@ def get_mail(retry=0):
 
                 for k, v in cfg.tokens.items():
                     if k in mail_content:
-                        if cfg.mail_rais_text in mail_content:
+                        if cfg.mail_rais_text.decode('utf-8') in mail_content:
                             bc.make_order('buy', k, v)
-                        if cfg.mail_fall_text in mail_content:
+                        if cfg.mail_fall_text.decode('utf-8') in mail_content:
                             bc.make_order('sell', k)
 
         # get balance after order

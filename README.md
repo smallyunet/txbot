@@ -53,8 +53,8 @@ mail_server_port = 0
 mail_list_type = '(UNSEEN)'
 # 1H 4H 1D
 mail_level = '4H'
-mail_rais_text = '看涨'
-mail_fall_text = '看跌'
+mail_rais_text = b'\xe7\x9c\x8b\xe6\xb6\xa8'
+mail_fall_text = b'\xe7\x9c\x8b\xe8\xb7\x8c'
 mail_address_verify = True
 mail_address_from = b'<subscription@bi123.co>'
 
