@@ -22,7 +22,7 @@ def getStr(s):
 
 def get_mail(retry=0):
     try:
-        tb.send_md("*Getting mail...*")
+        tb.send_text('Start get mail...')
 
         mail = imaplib.IMAP4_SSL(cfg.mail_server, cfg.mail_server_port)
         mail.login(cfg.mail_address, cfg.mail_password)
