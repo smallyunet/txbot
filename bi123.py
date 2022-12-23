@@ -22,7 +22,7 @@ def getStr(s):
 
 def get_mail(retry=0):
     try:
-        tb.send_text("Getting mail...")
+        tb.send_md("*Getting mail...*")
 
         mail = imaplib.IMAP4_SSL(cfg.mail_server, cfg.mail_server_port)
         mail.login(cfg.mail_address, cfg.mail_password)
@@ -106,11 +106,15 @@ def get_mail(retry=0):
                     continue
 
                 for k, v in cfg.tokens.items():
+                    # token in mail
                     if k in mail_content:
-                        if cfg.mail_rais_text.decode('utf-8') in mail_content:
-                            bc.make_order('buy', k, v)
-                        if cfg.mail_fall_text.decode('utf-8') in mail_content:
-                            bc.make_order('sell', k)
+                        # singal in mail
+                        for i in cfg.mail_rais_text:
+                            if i.decode('utf-8') in mail_content:
+                                bc.make_order('buy', k, v)
+                        for i in cfg.mail_fall_text:
+                            if i.decode('utf-8') in mail_content:
+                                bc.make_order('sell', k)
 
         # get balance after order
         bc.get_total_balance()

@@ -54,8 +54,14 @@ mail_server_port = 0
 mail_list_type = '(UNSEEN)'
 # 1H 4H 1D
 mail_level = '4H'
-mail_rais_text = b'\xe7\x9c\x8b\xe6\xb6\xa8'
-mail_fall_text = b'\xe7\x9c\x8b\xe8\xb7\x8c'
+mail_rais_text = [
+    b'\xe7\x9c\x8b\xe6\xb6\xa8',
+    b'\xe5\xa4\x9a\xe5\xa4\xb4\xe6\x8e\x92\xe5\x88\x97',
+]
+mail_fall_text = [
+    b'\xe7\x9c\x8b\xe8\xb7\x8c',
+    b'\xe7\xa9\xba\xe5\xa4\xb4\xe6\x8e\x92\xe5\x88\x97',
+]
 mail_address_verify = True
 mail_address_from = b'<subscription@bi123.co>'
 

@@ -75,11 +75,13 @@ def make_order(type, symbol, qty=0):
     if not cfg.binance_enable:
         return
 
-    msg = f'[Make order]\n'
-    msg += f'type: {type}\n'
-    msg += f'symbol: {symbol}\n'
-    msg += f'quoteOrderQty: {qty}\n'
-    tg.send_text(msg)
+    msg = f'''```
+[Make order]
+type:          {type}
+symbol:        {symbol}
+quoteOrderQty: {qty}
+```'''
+    tg.send_md(msg)
 
     try:
         spot, client = get_client()
