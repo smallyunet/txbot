@@ -21,8 +21,10 @@ def get_balance(client, spot, symbol):
         symbol_usdt_balance = symbol_balance * float(price['price'])
     return symbol_balance, symbol_usdt_balance
 
+
 def format(b):
     return "{:.{d}f}".format(b, d=cfg.token_balance_decimal)
+
 
 def get_total_balance():
     msg = f'''```
@@ -66,8 +68,7 @@ def get_client():
 
 def get_account_status(client):
     status = client.get_account_status()
-    msg = f'[Account status]\n'
-    msg += f'status: {status}\n'
+    msg = f'Account status: {status}\n'
     tg.send_text(msg)
 
 
@@ -101,13 +102,17 @@ quoteOrderQty: {qty}
             price = client.get_avg_price(symbol=symbolUSDT)
             qty = symbol_balance * \
                 float(price['price']) * cfg.token_remain_rate
-            qtyStr = "{:.2f}".format(qty)
+            qtyStr = "{:.4f}".format(qty)
             # params limit
             if qty < 10:
-                msg = f'[Order End]\n'
-                msg += f'qty: {qtyStr}\n'
-                msg += f'no need to sell\n'
-                tg.send_text(msg)
+                msg = f'''```
+[Order End]
+Toekn:   {symbol}
+Qty:     {qtyStr}
+Result:  Success
+Message: No need to sell
+```'''
+                tg.send_md(msg)
                 return
             params = {
                 'symbol': symbolUSDT,
@@ -119,10 +124,25 @@ quoteOrderQty: {qty}
         try:
             params['recvWindow'] = 59999
             response = spot.new_order(**params)
-            tg.send_text(json.dumps(response, indent=2))
+            res = {json.dumps(response, indent=2)}
+            msg = f'''```
+[Order End]
+Toekn:   {symbol}
+Qty:     {qtyStr}
+Result:  Success
+Message: {res}
+```'''
+            tg.send_md(msg)
         except Exception as e:
-            response = e.__str__()
-            tg.send_text(response)
+            res = e.__str__()
+            msg = f'''```
+[Order End]
+Toekn:   {symbol}
+Qty:     {qtyStr}
+Result:  Fail
+Message: {res}
+```'''
+            tg.send_md(msg)
 
     except Exception as e:
         tg.send_text(f'[In Binance Client Error]\n{e.__str__()}')
