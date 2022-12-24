@@ -124,7 +124,7 @@ Message: No need to sell
         try:
             params['recvWindow'] = 59999
             response = spot.new_order(**params)
-            res = {json.dumps(response, indent=2)}
+            res = json.dumps(response, indent=2)
             msg = f'''```
 [Order End]
 Toekn:   {symbol}
