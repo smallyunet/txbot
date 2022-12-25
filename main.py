@@ -9,15 +9,7 @@ import bi123 as bm
 
 if __name__ == '__main__':
     try:
-        msg = f'''```
-[Started]
-Mail list type:       {cfg.mail_list_type}
-Binance enabled:      {cfg.binance_enable}
-Telegram bot enabled: {cfg.telegram_enable}
-Proxy enabled:        {cfg.proxy_enable}
-Signal level:         {cfg.mail_level}
-Verify mail address:  {cfg.mail_address_verify}
-```'''
+        msg = tg.temp_started()
         tg.send_md(msg)
 
         msg = '''```

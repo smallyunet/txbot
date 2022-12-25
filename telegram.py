@@ -38,3 +38,32 @@ def send_md(message):
         )
     except Exception as e:
         print(e)
+
+def temp_started():
+    return f'''```
+[Started]
+Mail list type:       {cfg.mail_list_type}
+Binance enabled:      {cfg.binance_enable}
+Telegram bot enabled: {cfg.telegram_enable}
+Proxy enabled:        {cfg.proxy_enable}
+Signal level:         {cfg.mail_level}
+Verify mail address:  {cfg.mail_address_verify}
+```'''
+
+def temp_make_order(type, symbol, qty):
+    return f'''```
+[Make order]
+Type:          {type}
+Symbol:        {symbol}
+QuoteOrderQty: {qty}
+```'''
+
+
+def temp_order_end(symbol, qty, result, msg):
+    return f'''```
+[Order End]
+Toekn:   {symbol}
+Qty:     {qty}
+Result:  {result}
+Message: {msg}
+```'''

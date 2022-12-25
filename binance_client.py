@@ -75,14 +75,9 @@ def get_account_status(client):
 def make_order(type, symbol, qty=0):
     if not cfg.binance_enable:
         return
-    qtyStr = ""
+    qtyStr = "{:.4f}".format(qty)
 
-    msg = f'''```
-[Make order]
-Type:          {type}
-Symbol:        {symbol}
-QuoteOrderQty: {qty}
-```'''
+    msg = tg.temp_make_order(type, symbol, qtyStr)
     tg.send_md(msg)
 
     try:
@@ -103,16 +98,10 @@ QuoteOrderQty: {qty}
             price = client.get_avg_price(symbol=symbolUSDT)
             qty = symbol_balance * \
                 float(price['price']) * cfg.token_remain_rate
-            qtyStr = "{:.4f}".format(qty)
             # params limit
             if qty < 10:
-                msg = f'''```
-[Order End]
-Toekn:   {symbol}
-Qty:     {qtyStr}
-Result:  Success
-Message: No need to sell
-```'''
+                msg = tg.temp_order_end(
+                    symbol, qtyStr, 'Success', "No need to sell")
                 tg.send_md(msg)
                 return
             params = {
@@ -126,23 +115,11 @@ Message: No need to sell
             params['recvWindow'] = 59999
             response = spot.new_order(**params)
             res = json.dumps(response, indent=2)
-            msg = f'''```
-[Order End]
-Toekn:   {symbol}
-Qty:     {qtyStr}
-Result:  Success
-Message: {res}
-```'''
+            msg = tg.temp_order_end(symbol, qtyStr, 'Success', res)
             tg.send_md(msg)
         except Exception as e:
             res = e.__str__()
-            msg = f'''```
-[Order End]
-Toekn:   {symbol}
-Qty:     {qtyStr}
-Result:  Fail
-Message: {res}
-```'''
+            msg = tg.temp_order_end(symbol, qtyStr, 'Fail', res)
             tg.send_md(msg)
 
     except Exception as e:
