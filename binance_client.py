@@ -79,9 +79,9 @@ def make_order(type, symbol, qty=0):
 
     msg = f'''```
 [Make order]
-type:          {type}
-symbol:        {symbol}
-quoteOrderQty: {qty}
+Type:          {type}
+Symbol:        {symbol}
+QuoteOrderQty: {qty}
 ```'''
     tg.send_md(msg)
 
