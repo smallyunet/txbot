@@ -83,6 +83,7 @@ def get_mail(retry=0):
                 # filter not match level signal
                 if not cfg.mail_level == 'ALL':
                     if not cfg.mail_level in mail_content:
+                        tb.send_text('Not match level signal, skip.')
                         continue
 
                 msg = f'From: {mail_from}\n'
