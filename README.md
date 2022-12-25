@@ -11,7 +11,7 @@ Add the config file in the project folder:
 Receive signal mail from bi123:
 
 - Register in bi123.co by mail
-- Open mail push in bi123.co
+- Select your favorite coin and subscribe to the email notification in bi123.io.
 - Setup mail server info in `config.py`
 
 Make order automation in Binance:
@@ -23,6 +23,8 @@ Push action to telegram bot:
 
 - Get a bot and get the control token and group chat id
 - Setup in `config.py`
+
+You can turn on or off functions in `config.py`, such as if you don't need Telegram Bot notification, you can set `telegram enable = False`.
 
 ## Usage
 
