@@ -98,6 +98,7 @@ def make_order(type, symbol, qty=0):
             price = client.get_avg_price(symbol=symbolUSDT)
             qty = symbol_balance * \
                 float(price['price']) * cfg.token_remain_rate
+            qtyStr = "{:.4f}".format(qty)
             # params limit
             if qty < 10:
                 msg = tg.temp_order_end(
