@@ -81,8 +81,9 @@ def get_mail(retry=0):
                 mail_content = BeautifulSoup(mail_content, "lxml").text
 
                 # filter not match level signal
-                if not cfg.mail_level in mail_content:
-                    continue
+                if not cfg.mail_level == 'ALL':
+                    if not cfg.mail_level in mail_content:
+                        continue
 
                 msg = f'From: {mail_from}\n'
                 msg += f'Subject: {mail_subject}\n'
