@@ -75,6 +75,7 @@ def get_account_status(client):
 def make_order(type, symbol, qty=0):
     if not cfg.binance_enable:
         return
+    qtyStr = ""
 
     msg = f'''```
 [Make order]
