@@ -12,6 +12,8 @@ def get_balance(client, spot, symbol):
     balances = spot.account()['balances']
     symbol_balance = float([x['free']
                             for x in balances if x['asset'] == symbol][0])
+    usdt_balance = float([x['free']
+                          for x in balances if x['asset'] == 'USDT'][0])
     symbol_usdt_balance = 0
     if symbol == 'USDT':
         symbol_usdt_balance = symbol_balance
@@ -19,7 +21,7 @@ def get_balance(client, spot, symbol):
         symbolUSDT = symbol + 'USDT'
         price = client.get_avg_price(symbol=symbolUSDT)
         symbol_usdt_balance = symbol_balance * float(price['price'])
-    return symbol_balance, symbol_usdt_balance
+    return symbol_balance, symbol_usdt_balance, usdt_balance
 
 
 def format(b):
@@ -31,13 +33,13 @@ def get_total_balance():
 [All balance]
 '''
     spot, client = get_client()
-    balance, ubalance = get_balance(client, spot, 'USDT')
-    msg += f'USDT:  {format(ubalance)}\n'
-    total = ubalance
+    _, su, _ = get_balance(client, spot, 'USDT')
+    msg += f'USDT:  {format(su)}\n'
+    total = su
     for k, v in cfg.tokens.items():
-        balance, ubalance = get_balance(client, spot, k)
-        msg += '{0: <7}'.format(k + ': ') + str(format(ubalance)) + "\n"
-        total += ubalance
+        _, su, _ = get_balance(client, spot, k)
+        msg += '{0: <7}'.format(k + ': ') + str(format(su)) + "\n"
+        total += su
     total = format(total)
     msg += f'Total: {total}\n'
     msg += '```'
@@ -84,10 +86,14 @@ def make_order(type, symbol, qty=0):
         spot, client = get_client()
 
         get_account_status(client)
-        symbol_balance, u = get_balance(client, spot, symbol)
+        symbol_balance, _, usdt_balance = get_balance(client, spot, symbol)
 
         symbolUSDT = symbol + 'USDT'
         if type == "buy":
+            if qty > usdt_balance:
+                msg = tg.temp_order_end(
+                    symbol, qtyStr, 'Fail', "Not enough USDT")
+                tg.send_md(msg)
             params = {
                 'symbol': symbolUSDT,
                 'side': 'BUY',
