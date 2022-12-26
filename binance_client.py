@@ -94,6 +94,7 @@ def make_order(type, symbol, qty=0):
                 msg = tg.temp_order_end(
                     symbol, qtyStr, 'Fail', "Not enough USDT")
                 tg.send_md(msg)
+                return
             params = {
                 'symbol': symbolUSDT,
                 'side': 'BUY',
