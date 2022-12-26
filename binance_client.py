@@ -70,8 +70,7 @@ def get_client():
 
 def get_account_status(client):
     status = client.get_account_status()
-    msg = f'Account status: {status}\n'
-    tg.send_text(msg)
+    return status['data']
 
 
 def make_order(type, symbol, qty=0):
@@ -84,10 +83,7 @@ def make_order(type, symbol, qty=0):
 
     try:
         spot, client = get_client()
-
-        get_account_status(client)
         symbol_balance, _, usdt_balance = get_balance(client, spot, symbol)
-
         symbolUSDT = symbol + 'USDT'
         if type == "buy":
             if qty > usdt_balance:
@@ -109,7 +105,7 @@ def make_order(type, symbol, qty=0):
             # params limit
             if qty < 10:
                 msg = tg.temp_order_end(
-                    symbol, qtyStr, 'Success', "No need to sell")
+                    symbol, qtyStr, 'Fail', "No need to sell")
                 tg.send_md(msg)
                 return
             params = {
@@ -118,7 +114,6 @@ def make_order(type, symbol, qty=0):
                 'type': 'MARKET',
                 'quoteOrderQty': qtyStr,
             }
-
         try:
             params['recvWindow'] = 59999
             response = spot.new_order(**params)
