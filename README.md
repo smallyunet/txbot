@@ -2,6 +2,8 @@
 
 Get market signals from https://www.bi123.co and auto-make orders in Binance.
 
+You can read more about it in [My Cryptocurrency Trading Bot](https://smallyu-net.translate.goog/2022/12/03/%E6%88%91%E7%9A%84%E5%8A%A0%E5%AF%86%E8%B4%A7%E5%B8%81%E4%BA%A4%E6%98%93%E6%9C%BA%E5%99%A8%E4%BA%BA/?_x_tr_sch=http&_x_tr_sl=auto&_x_tr_tl=zh-CN&_x_tr_hl=en&_x_tr_pto=wapp).
+
 ## Preparation
 
 Add the config file in the project folder:
