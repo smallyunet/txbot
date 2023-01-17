@@ -119,7 +119,7 @@ def get_mail(retry=0):
                             if i.decode('utf-8') in mail_content:
                                 bc.make_order('sell', k)
                         # because telegram message is limited
-                        time.sleep(30)
+                        time.sleep(10)
 
         # get balance after order
         bc.get_total_balance()
