@@ -72,6 +72,7 @@ mail_fall_text = [
 ]
 mail_address_verify = True
 mail_address_from = b'<subscription@bi123.co>'
+mail_to_tg = False
 
 telegram_enable = True
 telegram_api_token = ''

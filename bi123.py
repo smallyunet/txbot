@@ -89,7 +89,8 @@ def get_mail(retry=0):
                 msg = f'From: {mail_from}\n'
                 msg += f'Subject: {mail_subject}\n'
                 msg += f'Content: {mail_content}\n'
-                tb.send_text(msg)
+                if cfg.mail_to_tg:
+                    tb.send_text(msg)
 
                 # verifiy mail address
                 wrong_address = False
