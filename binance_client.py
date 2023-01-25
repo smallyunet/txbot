@@ -73,7 +73,7 @@ def get_account_status(client):
     return status['data']
 
 
-def make_order(type, symbol, qty=0):
+def make_order(type, symbol, qty=-1):
     if not cfg.binance_enable:
         return
     qtyStr = "{:.4f}".format(qty)
