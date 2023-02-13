@@ -14,9 +14,15 @@ if __name__ == '__main__':
 
         msg = '''```
 [Tokens]\n'''
+        i = 0
         for token in cfg.tokens:
-            msg += "{0: <7}".format(token + ": ") + \
-                str(cfg.tokens[token]) + "\n"
+            if i % 2 == 0:
+                msg += "{0: <8}".format(token + ": ") + \
+                    "{0: <5}".format(str(cfg.tokens[token])) + " | "
+            else:
+                msg += "{0: <8}".format(token + ": ") + \
+                    "{0: <5}".format(str(cfg.tokens[token])) + "\n"
+            i += 1
         msg += '```'
         tg.send_md(msg)
 
