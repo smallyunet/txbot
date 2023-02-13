@@ -4,6 +4,7 @@ import datetime
 
 import telegram as tg
 import config as cfg
+import cfg_tool as cfgt
 import task as t
 import bi123 as bm
 
@@ -15,7 +16,7 @@ if __name__ == '__main__':
         msg = '''```
 [Tokens]\n'''
         i = 0
-        for token in cfg.tokens:
+        for token in cfgt.tokens:
             if i % 2 == 0:
                 msg += "{0: <7}".format(token + ": ") + \
                     "{0: <4}".format(str(cfg.tokens[token])) + " "

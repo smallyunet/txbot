@@ -4,6 +4,7 @@ from binance.client import Client
 import datetime
 
 import config as cfg
+import cfg_tool as cfgt
 import telegram as tg
 import db
 
@@ -37,7 +38,7 @@ def get_total_balance():
     msg += f'USDT:  {format(su)}\n'
     total = su
     i = 0
-    for k, v in cfg.tokens.items():
+    for k, v in cfgt.tokens.items():
         _, su, _ = get_balance(client, spot, k)
         if i % 2 == 0:
             msg += '{0: <7}'.format(k + ': ') + \
