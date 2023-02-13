@@ -18,7 +18,7 @@ if __name__ == '__main__':
         for token in cfg.tokens:
             if i % 2 == 0:
                 msg += "{0: <7}".format(token + ": ") + \
-                    "{0: <4}".format(str(cfg.tokens[token])) + " | "
+                    "{0: <4}".format(str(cfg.tokens[token])) + " "
             else:
                 msg += "{0: <7}".format(token + ": ") + \
                     "{0: <4}".format(str(cfg.tokens[token])) + "\n"
