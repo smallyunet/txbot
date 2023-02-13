@@ -37,15 +37,10 @@ def get_total_balance():
     _, su, _ = get_balance(client, spot, 'USDT')
     msg += f'USDT:  {format(su)}\n'
     total = su
-    i = 0
     for k, v in cfgt.tokens.items():
         _, su, _ = get_balance(client, spot, k)
-        if i % 2 == 0:
-            msg += '{0: <7}'.format(k + ': ') + \
-                '{0: >9}'.format(str(format(su))) + " "
-        else:
-            msg += '{0: <7}'.format(k + ': ') + \
-                '{0: >9}'.format(str(format(su))) + "\n"
+        msg += '{0: <7}'.format(k + ': ') + \
+            '{0: >9}'.format(str(format(su))) + "\n"
         total += su
         i += 1
     total = format(total)
