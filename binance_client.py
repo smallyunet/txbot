@@ -40,9 +40,9 @@ def get_total_balance():
     for k, v in cfg.tokens.items():
         _, su, _ = get_balance(client, spot, k)
         if i % 2 == 0:
-            msg += '{0: <7}'.format(k + ': ') + str(format(su)) + " | "
+            msg += '{0: <7}'.format(k + ': ') + '{0: <10}'.format(str(format(su))) + " | "
         else:
-            msg += '{0: <7}'.format(k + ': ') + str(format(su)) + "\n"
+            msg += '{0: <7}'.format(k + ': ') + '{0: <10}'.format(str(format(su))) + "\n"
         total += su
         i += 1
     total = format(total)
