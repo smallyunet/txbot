@@ -42,10 +42,10 @@ def get_total_balance():
         _, su, _ = get_balance(client, spot, k)
         if i % 2 == 0:
             msg += '{0: <7}'.format(k + ': ') + \
-                '{0: <9}'.format(str(format(su))) + " "
+                '{0: >9}'.format(str(format(su))) + " "
         else:
             msg += '{0: <7}'.format(k + ': ') + \
-                '{0: <9}'.format(str(format(su))) + "\n"
+                '{0: >9}'.format(str(format(su))) + "\n"
         total += su
         i += 1
     total = format(total)
