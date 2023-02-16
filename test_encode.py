@@ -41,6 +41,7 @@ mail_content = """
 2.可回复本邮件，解除邮件接收次数限制。
 """
 k = "T"
-kStr = b'\xe3\x80\x90\xe6\xa0\x87\xe7\x9a\x84\xe3\x80\x91'.decode('utf-8') + k + '/USDT'
+kStr = b'\xe3\x80\x90\xe6\xa0\x87\xe7\x9a\x84\xe3\x80\x91'.decode(
+    'utf-8') + k + '/USDT'
 print(kStr)
 print(kStr in mail_content)

@@ -1,10 +1,11 @@
 import requests
+import collections
 
 import config as cfg
 
 
 def send_text(message):
-    print(f'Send telegram message: {message}')
+    print(f'[text] Send telegram message: {message}')
     if not cfg.telegram_enable:
         return
 
@@ -22,7 +23,7 @@ def send_text(message):
 
 
 def send_md(message):
-    print(f'Send telegram message: {message}')
+    print(f'[md] Send telegram message: {message}')
     if not cfg.telegram_enable:
         return
 
@@ -39,31 +40,56 @@ def send_md(message):
     except Exception as e:
         print(e)
 
-def temp_started():
-    return f'''```
-[Started]
-Mail list type:       {cfg.mail_list_type}
-Binance enabled:      {cfg.binance_enable}
-Telegram bot enabled: {cfg.telegram_enable}
-Proxy enabled:        {cfg.proxy_enable}
-Signal level:         {cfg.mail_level}
-Verify mail address:  {cfg.mail_address_verify}
-```'''
 
-def temp_make_order(type, symbol, qty):
-    return f'''```
+def send_started_config():
+    msg = f'''```
+[Started]
+Mail List Type:       {cfg.mail_list_type}
+Signal Level:         {cfg.mail_level}
+Binance Enabled:      {cfg.binance_enable}
+Telegram Bot Enabled: {cfg.telegram_enable}
+Proxy Enabled:        {cfg.proxy_enable}
+Verify Mail Address:  {cfg.mail_address_verify}
+Toekns Count:         {len(cfg.tokens)}
+```'''
+    send_md(msg)
+
+
+def send_make_order(type, symbol, qty):
+    if qty == -1:
+        qty = 'All'
+    msg = f'''```
 [Make order]
 Type:          {type}
 Symbol:        {symbol}
 QuoteOrderQty: {qty}
 ```'''
+    send_md(msg)
 
 
-def temp_order_end(symbol, qty, result, msg):
-    return f'''```
+def send_order_end(symbol, qty, result, msg):
+    msg = f'''```
 [Order End]
 Toekn:   {symbol}
 Qty:     {qty}
 Result:  {result}
 Message: {msg}
 ```'''
+    send_md(msg)
+
+
+def send_tokens_list():
+    msg = '''```
+[Tokens]\n'''
+    i = 0
+    tokens = collections.OrderedDict(sorted(cfg.tokens.items()))
+    for token in tokens:
+        if i % 2 == 0:
+            msg += "{0: <7}".format(token + ": ") + \
+                "{0: <4}".format(str(cfg.tokens[token])) + " "
+        else:
+            msg += "{0: <7}".format(token + ": ") + \
+                "{0: <4}".format(str(cfg.tokens[token])) + "\n"
+        i += 1
+    msg += '```'
+    send_md(msg)

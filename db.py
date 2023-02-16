@@ -1,11 +1,13 @@
 import json
 import os
 
+
 def init(file):
     if not os.path.isfile(f'{file}.json'):
         f = open(f'{file}.json', 'w')
         json.dump({}, f)
         f.close()
+
 
 def get_all(file):
     init(file)
@@ -13,6 +15,7 @@ def get_all(file):
     data = json.load(f)
     f.close()
     return data
+
 
 def get_latest(file, num=1):
     init(file)
@@ -24,6 +27,7 @@ def get_latest(file, num=1):
     for key in keys:
         result[key] = data[key]
     return result
+
 
 def insert(file, key, value):
     init(file)

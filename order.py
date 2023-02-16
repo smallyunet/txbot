@@ -2,10 +2,10 @@ import json
 from binance.spot import Spot
 from binance.client import Client
 import datetime
+import collections
 
 import config as cfg
-import cfg_tool as cfgt
-import telegram as tg
+import telegram as tb
 import db
 
 
@@ -37,7 +37,8 @@ def get_total_balance():
     _, su, _ = get_balance(client, spot, 'USDT')
     msg += f'USDT:  {format(su)}\n'
     total = su
-    for k, v in cfgt.tokens.items():
+    tokens = collections.OrderedDict(sorted(cfg.tokens.items()))
+    for k, v in tokens.items():
         _, su, _ = get_balance(client, spot, k)
         msg += '{0: <7}'.format(k + ': ') + \
             '{0: >9}'.format(str(format(su))) + "\n"
@@ -45,7 +46,7 @@ def get_total_balance():
     total = format(total)
     msg += f'Total: {total}\n'
     msg += '```'
-    tg.send_md(msg)
+    tb.send_md(msg)
     db.insert('balance', datetime.datetime.now().strftime('%Y-%m-%d'), total)
 
 
@@ -80,8 +81,7 @@ def make_order(type, symbol, qty=-1):
         return
     qtyStr = "{:.4f}".format(qty)
 
-    msg = tg.temp_make_order(type, symbol, qtyStr)
-    tg.send_md(msg)
+    tb.send_make_order(type, symbol, qtyStr)
 
     try:
         spot, client = get_client()
@@ -89,9 +89,7 @@ def make_order(type, symbol, qty=-1):
         symbolUSDT = symbol + 'USDT'
         if type == "buy":
             if qty > usdt_balance:
-                msg = tg.temp_order_end(
-                    symbol, qtyStr, 'Fail', "Not enough USDT")
-                tg.send_md(msg)
+                tb.send_order_end(symbol, qtyStr, 'Fail', "Not enough USDT")
                 return
             params = {
                 'symbol': symbolUSDT,
@@ -106,9 +104,7 @@ def make_order(type, symbol, qty=-1):
             qtyStr = "{:.4f}".format(qty)
             # params limit
             if qty < 10:
-                msg = tg.temp_order_end(
-                    symbol, qtyStr, 'Fail', "No need to sell")
-                tg.send_md(msg)
+                tb.send_order_end(symbol, qtyStr, 'Fail', "No need to sell")
                 return
             params = {
                 'symbol': symbolUSDT,
@@ -120,12 +116,10 @@ def make_order(type, symbol, qty=-1):
             params['recvWindow'] = 59999
             response = spot.new_order(**params)
             res = json.dumps(response, indent=2)
-            msg = tg.temp_order_end(symbol, qtyStr, 'Success', res)
-            tg.send_md(msg)
+            tb.send_order_end(symbol, qtyStr, 'Success', res)
         except Exception as e:
             res = e.__str__()
-            msg = tg.temp_order_end(symbol, qtyStr, 'Fail', res)
-            tg.send_md(msg)
+            tb.send_order_end(symbol, qtyStr, 'Fail', res)
 
     except Exception as e:
-        tg.send_text(f'[In Binance Client Error]\n{e.__str__()}')
+        tb.send_text(f'[In Binance Client Error]\n{e.__str__()}')

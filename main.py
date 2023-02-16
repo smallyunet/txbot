@@ -1,42 +1,37 @@
 import sys
 import os
 import datetime
+import schedule
+import time
+import datetime
 
-import telegram as tg
-import config as cfg
-import cfg_tool as cfgt
-import task as t
-import bi123 as bm
+import telegram as tb
+import mail as ml
+
+
+def task():
+    schedule.every().hour.at(":03").do(ml.get_mail)
+
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
 
 if __name__ == '__main__':
     try:
-        msg = tg.temp_started()
-        tg.send_md(msg)
-
-        msg = '''```
-[Tokens]\n'''
-        i = 0
-        for token in cfgt.tokens:
-            if i % 2 == 0:
-                msg += "{0: <7}".format(token + ": ") + \
-                    "{0: <4}".format(str(cfg.tokens[token])) + " "
-            else:
-                msg += "{0: <7}".format(token + ": ") + \
-                    "{0: <4}".format(str(cfg.tokens[token])) + "\n"
-            i += 1
-        msg += '```'
-        tg.send_md(msg)
+        tb.send_started_config
+        tb.send_tokens_list()
 
         # run once at start
-        bm.get_mail()
+        ml.get_mail()
 
         # start schedule
-        t.job()
+        task()
 
     except KeyboardInterrupt:
         now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         print("I'm exiting...", now)
-        tg.send_text("I'm exiting...")
+        tb.send_text("I'm exiting...")
 
         try:
             sys.exit(0)

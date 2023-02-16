@@ -8,7 +8,7 @@ import re
 from bs4 import BeautifulSoup
 
 import config as cfg
-import binance_client as bc
+import order as bc
 import telegram as tb
 import db
 
@@ -110,7 +110,8 @@ def get_mail(retry=0):
 
                 for k, v in cfg.tokens.items():
                     # token in mail
-                    kStr = b'\xe3\x80\x90\xe6\xa0\x87\xe7\x9a\x84\xe3\x80\x91'.decode('utf-8') + k + '/USDT'
+                    kStr = b'\xe3\x80\x90\xe6\xa0\x87\xe7\x9a\x84\xe3\x80\x91'.decode(
+                        'utf-8') + k + '/USDT'
                     if kStr in mail_content:
                         # singal in mail
                         for i in cfg.mail_rais_text:
