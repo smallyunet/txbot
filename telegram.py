@@ -56,7 +56,7 @@ Toekns Count:         {len(cfg.tokens)}
 
 
 def send_make_order(type, symbol, qty):
-    if qty == -1.0:
+    if qty == '-1.0000':
         qty = 'All'
     msg = f'''```
 [Make order]
