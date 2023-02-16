@@ -19,7 +19,7 @@ def task():
 
 if __name__ == '__main__':
     try:
-        tb.send_started_config
+        tb.send_started_config()
         tb.send_tokens_list()
 
         # run once at start
