@@ -55,23 +55,11 @@ Toekns Count:         {len(cfg.tokens)}
 ```'''
     send_md(msg)
 
-
-def send_make_order(type, symbol, qty):
-    if qty == '-1.0000':
-        qty = 'All'
+def send_order_end(symbol, type,  qty, result, msg):
     msg = f'''```
 [Make Order]
-Type:          {type}
-Symbol:        {symbol}
-QuoteOrderQty: {qty}
-```'''
-    send_md(msg)
-
-
-def send_order_end(symbol, qty, result, msg):
-    msg = f'''```
-[Order End]
 Toekn:   {symbol}
+Type:    {type}
 Qty:     {qty}
 Result:  {result}
 Message: {msg}

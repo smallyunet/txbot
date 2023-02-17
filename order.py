@@ -93,7 +93,8 @@ def make_order(type, symbol, qty=-1):
         symbolUSDT = symbol + 'USDT'
         if type == "buy":
             if qty > usdt_balance:
-                tb.send_order_end(symbol, qtyStr, 'Fail', "Not enough USDT")
+                tb.send_order_end(symbol, type, qtyStr,
+                                  'Fail', "Not enough USDT")
                 return
             params = {
                 'symbol': symbolUSDT,
@@ -109,7 +110,8 @@ def make_order(type, symbol, qty=-1):
             qtyStr = "{:.4f}".format(qty)
             # params limit
             if qty < 10:
-                tb.send_order_end(symbol, qtyStr, 'Fail', "No need to sell")
+                tb.send_order_end(symbol, type, qtyStr,
+                                  'Fail', "No need to sell")
                 return
             params = {
                 'symbol': symbolUSDT,
@@ -120,11 +122,11 @@ def make_order(type, symbol, qty=-1):
             }
         try:
             res = spot.new_order(**params)
-            tb.send_order_end(symbol, qtyStr, 'Success',
+            tb.send_order_end(symbol, type, qtyStr, 'Success',
                               res['cummulativeQuoteQty'])
         except Exception as e:
             res = e.__str__()
-            tb.send_order_end(symbol, qtyStr, 'Fail', res)
+            tb.send_order_end(symbol, type, qtyStr, 'Fail', res)
 
     except Exception as e:
         tb.send_text(f'[In Binance Client Error]\n{e.__str__()}')
