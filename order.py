@@ -51,6 +51,8 @@ def get_total_balance():
                 '{0: >6}'.format(str(format(su))) + "\n"
         total += su
         i += 1
+    if i % 2 == 0:
+        msg += "\n"
     total = format(total)
     msg += f'Total: {total}\n'
     msg += '```'
