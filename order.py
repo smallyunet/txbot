@@ -85,7 +85,7 @@ def get_account_status(client):
 def make_order(type, symbol, qty=-1):
     if not cfg.binance_enable:
         return
-    qtyStr = "{:.4f}".format(qty)
+    qtyStr = format(qty)
 
     try:
         spot, client = get_client()
