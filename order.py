@@ -48,6 +48,7 @@ def get_total_balance():
             msg += '{0: <7}'.format(k + ': ') + \
                 '{0: >6}'.format(str(format(su))) + "\n"
         total += su
+        i += 1
     total = format(total)
     msg += f'Total: {total}\n'
     msg += '```'
