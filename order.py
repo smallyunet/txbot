@@ -41,7 +41,7 @@ def get_total_balance():
     i = 0
     for k, v in tokens.items():
         _, su, _ = get_balance(client, spot, k)
-        if i%2 == 0:
+        if i % 2 == 0:
             msg += '{0: <7}'.format(k + ': ') + \
                 '{0: >6}'.format(str(format(su))) + " | "
         else:
@@ -119,8 +119,7 @@ def make_order(type, symbol, qty=-1):
                 'recvWindow': 59999
             }
         try:
-            response = spot.new_order(**params)
-            res = json.dumps(response, indent=2)
+            res = spot.new_order(**params)
             tb.send_order_end(symbol, qtyStr, 'Success',
                               res['cummulativeQuoteQty'])
         except Exception as e:
