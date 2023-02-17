@@ -11,10 +11,13 @@ import db
 
 def get_balance(client, spot, symbol):
     balances = spot.account()['balances']
-    symbol_balance = float([x['free']
-                            for x in balances if x['asset'] == symbol][0])
-    usdt_balance = float([x['free']
-                          for x in balances if x['asset'] == 'USDT'][0])
+    symbol_balance = 0
+    usdt_balance = 0
+    for b in balances:
+        if b['asset'] == symbol:
+            symbol_balance = float(b['free'][0])
+        if b['asset'] == 'USDT':
+            usdt_balance = float(b['free'][0])
     symbol_usdt_balance = 0
     if symbol == 'USDT':
         symbol_usdt_balance = symbol_balance
