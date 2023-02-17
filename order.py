@@ -38,10 +38,15 @@ def get_total_balance():
     msg += f'USDT:  {format(su)}\n'
     total = su
     tokens = collections.OrderedDict(sorted(cfg.tokens.items()))
+    i = 0
     for k, v in tokens.items():
         _, su, _ = get_balance(client, spot, k)
-        msg += '{0: <7}'.format(k + ': ') + \
-            '{0: >9}'.format(str(format(su))) + "\n"
+        if i%2 == 0:
+            msg += '{0: <7}'.format(k + ': ') + \
+                '{0: >6}'.format(str(format(su))) + " "
+        else:
+            msg += '{0: <7}'.format(k + ': ') + \
+                '{0: >6}'.format(str(format(su))) + "\n"
         total += su
     total = format(total)
     msg += f'Total: {total}\n'
