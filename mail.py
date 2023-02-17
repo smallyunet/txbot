@@ -83,7 +83,6 @@ def get_mail(retry=0):
                 # filter not match level signal
                 if not cfg.mail_level == 'ALL':
                     if not cfg.mail_level in mail_content:
-                        tb.send_text('Not match level signal, skip.')
                         continue
 
                 msg = f'From: {mail_from}\n'
@@ -104,8 +103,6 @@ def get_mail(retry=0):
                         wrong_address = True
 
                 if wrong_address:
-                    msg = f'Get a wrong email from address: {from_address}\n'
-                    tb.send_text(msg)
                     continue
 
                 for k, v in cfg.tokens.items():
@@ -120,16 +117,6 @@ def get_mail(retry=0):
                         for i in cfg.mail_fall_text:
                             if i.decode('utf-8') in mail_content:
                                 bc.make_order('sell', k)
-                        # because telegram message is limited
-                        time.sleep(10)
-
-        # get balance after order
-        bc.get_total_balance()
-        data = db.get_latest('balance', 7)
-        msg = f'Balance history:\n'
-        for k, v in data.items():
-            msg += f'{k}: {v}\n'
-        tb.send_text(msg)
 
     except Exception as e:
         msg = f'*Error: {e}*\n'

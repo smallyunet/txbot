@@ -2,6 +2,7 @@ import requests
 import collections
 
 import config as cfg
+import db
 
 
 def send_text(message):
@@ -93,3 +94,11 @@ def send_tokens_list():
         i += 1
     msg += '```'
     send_md(msg)
+
+
+def send_balance_history():
+    data = db.get_latest('balance', 7)
+    msg = f'Balance history:\n'
+    for k, v in data.items():
+        msg += f'{k}: {v}\n'
+    send_text(msg)

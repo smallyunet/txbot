@@ -7,14 +7,14 @@ import datetime
 
 import telegram as tb
 import mail as ml
+import order as bc
+import db
 
 
-def task():
-    schedule.every().hour.at(":03").do(ml.get_mail)
-
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+def job():
+    ml.get_mail()
+    bc.get_total_balance()
+    tb.send_balance_history()
 
 
 if __name__ == '__main__':
@@ -23,10 +23,11 @@ if __name__ == '__main__':
         tb.send_tokens_list()
 
         # run once at start
-        ml.get_mail()
-
-        # start schedule
-        task()
+        job()
+        schedule.every().hour.at(":03").do(job)
+        while True:
+            schedule.run_pending()
+            time.sleep(1)
 
     except KeyboardInterrupt:
         now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
