@@ -81,8 +81,6 @@ def make_order(type, symbol, qty=-1):
         return
     qtyStr = "{:.4f}".format(qty)
 
-    tb.send_make_order(type, symbol, qtyStr)
-
     try:
         spot, client = get_client()
         symbol_balance, _, usdt_balance = get_balance(client, spot, symbol)
@@ -96,6 +94,7 @@ def make_order(type, symbol, qty=-1):
                 'side': 'BUY',
                 'type': 'MARKET',
                 'quoteOrderQty': qty,
+                'recvWindow': 59999
             }
         if type == "sell":
             price = client.get_avg_price(symbol=symbolUSDT)
@@ -111,12 +110,13 @@ def make_order(type, symbol, qty=-1):
                 'side': 'SELL',
                 'type': 'MARKET',
                 'quoteOrderQty': qtyStr,
+                'recvWindow': 59999
             }
         try:
-            params['recvWindow'] = 59999
             response = spot.new_order(**params)
             res = json.dumps(response, indent=2)
-            tb.send_order_end(symbol, qtyStr, 'Success', res)
+            tb.send_order_end(symbol, qtyStr, 'Success',
+                              res['cummulativeQuoteQty'])
         except Exception as e:
             res = e.__str__()
             tb.send_order_end(symbol, qtyStr, 'Fail', res)

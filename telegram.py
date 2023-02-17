@@ -60,7 +60,7 @@ def send_make_order(type, symbol, qty):
     if qty == '-1.0000':
         qty = 'All'
     msg = f'''```
-[Make order]
+[Make Order]
 Type:          {type}
 Symbol:        {symbol}
 QuoteOrderQty: {qty}

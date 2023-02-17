@@ -20,7 +20,7 @@ def getStr(s):
         return s
 
 
-def get_mail(retry=0):
+def get_mail():
     try:
         tb.send_text('Start get mail...')
 
@@ -119,10 +119,5 @@ def get_mail(retry=0):
                                 bc.make_order('sell', k)
 
     except Exception as e:
-        msg = f'*Error: {e}*\n'
-        msg += f'Retry: [{retry}/3]'
+        msg = f'*Error: {e}*'
         tb.send_md(msg)
-
-        if retry < 3:
-            time.sleep(60)
-            get_mail(retry + 1)
