@@ -18,7 +18,7 @@ def get_balance(client, spot, symbol):
             exist = True
             break
     if not exist:
-        return symbol_balance, symbol_usdt_balance, usdt_balance
+        return 0, 0, 0
 
     symbol_balance = 0
     usdt_balance = 0
