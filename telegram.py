@@ -60,9 +60,9 @@ def send_order_end(symbol, type,  qty, result, msg):
 [Make Order]
 Toekn:   {symbol}
 Type:    {type}
-Qty:     {qty}
 Result:  {result}
-Message: {msg}
+Req:     {qty}
+Res:     {msg}
 ```'''
     send_md(msg)
 

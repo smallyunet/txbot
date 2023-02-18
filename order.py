@@ -98,7 +98,7 @@ def make_order(type, symbol, qty=-1):
         if type == "buy":
             if qty > usdt_balance:
                 tb.send_order_end(symbol, type, qtyStr,
-                                  'Fail', "Not enough USDT")
+                                  'Fail', "No enough USDT")
                 return
             params = {
                 'symbol': symbolUSDT,
@@ -127,7 +127,7 @@ def make_order(type, symbol, qty=-1):
         try:
             res = spot.new_order(**params)
             tb.send_order_end(symbol, type, qtyStr, 'Success',
-                              res['cummulativeQuoteQty'])
+                              format(str(res['cummulativeQuoteQty'])))
         except Exception as e:
             res = e.__str__()
             tb.send_order_end(symbol, type, qtyStr, 'Fail', res)
