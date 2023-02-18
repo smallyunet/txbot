@@ -127,7 +127,7 @@ def make_order(type, symbol, qty=-1):
         try:
             res = spot.new_order(**params)
             tb.send_order_end(symbol, type, qtyStr, 'Success',
-                              format(str(res['cummulativeQuoteQty'])))
+                              format(float(res['cummulativeQuoteQty'])))
         except Exception as e:
             res = e.__str__()
             tb.send_order_end(symbol, type, qtyStr, 'Fail', res)
