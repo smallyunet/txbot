@@ -59,7 +59,7 @@ def send_order_end(symbol, type,  qty, result, msg):
     msg = f'''```
 [Make Order]
 Toekn:   {symbol}
-Type:    {type}
+Type:    {type.upper()}
 Result:  {result}
 Req:     {qty}
 Res:     {msg}
