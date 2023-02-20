@@ -5,15 +5,15 @@ import time
 import config as cfg
 import db
 
-i = 0
+delay = 0
 
 
 def send_text(message):
     print(f'[text] Send telegram message: {message}')
     if not cfg.telegram_enable:
         return
-    i += 3
-    time.sleep(i)
+    delay += 3
+    time.sleep(delay)
     url = f'https://api.telegram.org/bot{cfg.telegram_api_token}/sendMessage'
     try:
         response = requests.post(
@@ -25,15 +25,15 @@ def send_text(message):
         )
     except Exception as e:
         print(e)
-    i -= 3
+    delay -= 3
 
 
 def send_md(message):
     print(f'[md] Send telegram message: {message}')
     if not cfg.telegram_enable:
         return
-    i += 3
-    time.sleep(i)
+    delay += 3
+    time.sleep(delay)
     url = f'https://api.telegram.org/bot{cfg.telegram_api_token}/sendMessage'
     try:
         response = requests.post(
@@ -46,7 +46,7 @@ def send_md(message):
         )
     except Exception as e:
         print(e)
-    i -= 3
+    delay -= 3
 
 
 def send_started_config():
