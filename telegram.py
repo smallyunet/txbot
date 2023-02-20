@@ -1,15 +1,19 @@
 import requests
 import collections
+import time
 
 import config as cfg
 import db
+
+i = 0
 
 
 def send_text(message):
     print(f'[text] Send telegram message: {message}')
     if not cfg.telegram_enable:
         return
-
+    i += 3
+    time.sleep(i)
     url = f'https://api.telegram.org/bot{cfg.telegram_api_token}/sendMessage'
     try:
         response = requests.post(
@@ -21,13 +25,15 @@ def send_text(message):
         )
     except Exception as e:
         print(e)
+    i -= 3
 
 
 def send_md(message):
     print(f'[md] Send telegram message: {message}')
     if not cfg.telegram_enable:
         return
-
+    i += 3
+    time.sleep(i)
     url = f'https://api.telegram.org/bot{cfg.telegram_api_token}/sendMessage'
     try:
         response = requests.post(
@@ -40,6 +46,7 @@ def send_md(message):
         )
     except Exception as e:
         print(e)
+    i -= 3
 
 
 def send_started_config():
@@ -54,6 +61,7 @@ Verify Mail Address:  {cfg.mail_address_verify}
 Toekns Count:         {len(cfg.tokens)}
 ```'''
     send_md(msg)
+
 
 def send_order_end(symbol, type,  qty, result, msg):
     msg = f'''```
