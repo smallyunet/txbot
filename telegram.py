@@ -12,6 +12,7 @@ def send_text(message):
     print(f'[text] Send telegram message: {message}')
     if not cfg.telegram_enable:
         return
+    global delay
     delay += 3
     time.sleep(delay)
     url = f'https://api.telegram.org/bot{cfg.telegram_api_token}/sendMessage'
@@ -32,6 +33,7 @@ def send_md(message):
     print(f'[md] Send telegram message: {message}')
     if not cfg.telegram_enable:
         return
+    global delay
     delay += 3
     time.sleep(delay)
     url = f'https://api.telegram.org/bot{cfg.telegram_api_token}/sendMessage'
