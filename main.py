@@ -24,7 +24,10 @@ if __name__ == '__main__':
 
         # run once at start
         job()
+        schedule.every().hour.at(":01").do(job)
+        schedule.every().hour.at(":03").do(job)
         schedule.every().hour.at(":05").do(job)
+        schedule.every().hour.at(":07").do(job)
         while True:
             schedule.run_pending()
             time.sleep(1)
