@@ -98,7 +98,7 @@ def make_order(type, symbol, qty=-1):
         if type == "buy":
             if qty > usdt_balance:
                 tb.send_order_end(symbol, type, qtyStr,
-                                  'Fail', "No enough USDT")
+                                  'Fail', "No Enough USDT")
                 return
             params = {
                 'symbol': symbolUSDT,
@@ -115,7 +115,7 @@ def make_order(type, symbol, qty=-1):
             # params limit
             if qty < 10:
                 tb.send_order_end(symbol, type, qtyStr,
-                                  'Fail', "No need to sell")
+                                  'Fail', "No Need To sell")
                 return
             params = {
                 'symbol': symbolUSDT,
