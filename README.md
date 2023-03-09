@@ -87,6 +87,7 @@ tokens = {
 }
 token_remain_rate = 0.995
 token_balance_decimal = 4
+token_balance_history = True
 
 telegram_enable = True
 telegram_api_token = ''
